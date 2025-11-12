@@ -1,11 +1,5 @@
-document.querySelector(`h1`)!.innerHTML = `Omar ahmed`;
-var isLoggedIn = true;
+var user = document.querySelector(`h1`);
+user!.innerHTML = "Omar walied";
+var isLoggedIn: boolean = true;
 
-function printUserName() {
-  var userName: string = "Omar";
-  if (isLoggedIn) {
-  }
-  console.log(userName);
-}
-
-printUserName();
+console.log(window.user?.textContent);
