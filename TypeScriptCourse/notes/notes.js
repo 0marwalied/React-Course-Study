@@ -1,5 +1,5 @@
 let notes = [
-  `<code>ts --init</code> to create a <file>tsconfig.json</file> file for configuring TypeScript project settings.`,
+  `<code>tsc --init</code> to create a <file>tsconfig.json</file> file for configuring TypeScript project settings.`,
   `<code>ts-node</code> <file>fileName.ts</file> for running TypeScript files directly without compiling`,
   `<code>tsc fileName.ts</code> for compiling TypeScript files to JavaScript`,
   `<code>readonly</code> modifier to make properties immutable after initialization.`,
