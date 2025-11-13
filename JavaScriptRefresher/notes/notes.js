@@ -1,5 +1,7 @@
 let notes = [
-
+  `There is two types of writing functions in objects: method syntax and function syntax. <br> 
+  In method syntax, we don't use the <code>function</code> keyword <br> 
+  In function syntax, we use the <code>function</code> keyword.`,
 ];
 let list = document.querySelector(`ul`);
 

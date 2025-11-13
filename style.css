@@ -13,6 +13,7 @@ h1 {
 ul {
   list-style: none;
   padding: 0px;
+  font-weight: bold;
   li {
     font-size: 1.1em;
     margin: 20px 0px;

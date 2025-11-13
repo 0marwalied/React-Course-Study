@@ -1,5 +1,9 @@
-var user = document.querySelector(`h1`);
-user!.innerHTML = "Omar walied";
-var isLoggedIn: boolean = true;
+const person = {
+  name: "omar",
+  age: 21,
+};
 
-console.log(window.user?.textContent);
+console.log(person.name);
+console.log(person["age"]);
+
+console.log(person);
