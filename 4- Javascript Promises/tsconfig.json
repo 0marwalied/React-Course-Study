@@ -8,7 +8,7 @@
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
     "module": "none",
-    "target": "esnext",
+    "target": "es2021",
     "types": [],
     // For nodejs:
     // "lib": ["esnext"],
@@ -38,6 +38,6 @@
     "verbatimModuleSyntax": true,
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,
-    "skipLibCheck": true,
+    "skipLibCheck": true
   }
 }
