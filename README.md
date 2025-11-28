@@ -14,4 +14,4 @@
 
 ## Notes
 
-- [Notes](./index.html)
+- [Notes](https://0marwalied.github.io/React-Course-Study/)
