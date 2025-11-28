@@ -25,9 +25,8 @@
 - `Fragment` is used to group multiple elements without adding extra nodes to the DOM
 
 - `JSX Rules:`
-
-  1. You can only return one top-level element 
+  1. You can only return one top-level element
   2. Any element must include closing tag side
-  3. Component Name Must Capitalized 
+  3. Component Name Must Capitalized
   4. If you want to make an Expression in JSX you must wrapped it arround `{}`
-  5. When you gives a class to component user className insted`,
+  5. When you gives a class to component user className insted
