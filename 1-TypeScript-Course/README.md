@@ -4,30 +4,29 @@
 
 `ts-node` `fileName.ts` for running TypeScript files directly without compiling`
 
-`<code>tsc fileName.ts</code> for compiling TypeScript files to JavaScript`
+`tsc fileName.ts` for compiling TypeScript files to JavaScript
 
-`<code>readonly</code> modifier to make properties immutable after initialization.`
+`readonly` modifier to make properties immutable after initialization.
 
-`<code>Record&lt;string, number&gt;</code> creates an object with string keys and number values.`
+`Record<string, number>` creates an object with string keys and number values.
 
-`<code>keyof</code> can be used to get the keys of a type as a union.`
+`keyof` can be used to get the keys of a type as a union.
 
-`<code>Generic</code> types allow you to create reusable components that work with a variety of data types, Same as template in <code>c++</code>.
-<br><br>
+`Generic` types allow you to create reusable components that work with a variety of data types, Same as template in `c++`.<br>
 Example:
-<code>
-function swap&lt;T&gt;(a: T, b: T): [T, T] {
-return [b, a];
+
+```TS
+function swap<T>(a: T, b: T): [T, T] {
+  return [b, a];
 }
-</code>
-`,
-`Partial types with the <code>Partial&lt;Any type&gt;</code> utility type to make all properties of a type optional.`,
-`<code>index signature</code> to define types for objects with dynamic keys.
-<br><br>
+```
+
+Partial types with the `Partial<Any type>` utility type to make all properties of a type optional.
+
+`index signature` to define types for objects with dynamic keys.
+<br>
 Example:
-<code>
-interface StringNumberMap {
-[key: string]: number;
-}
-</code>
-`,
+
+```TS
+interface StringNumberMap { [key: string]: number; }
+```
