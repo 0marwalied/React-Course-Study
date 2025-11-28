@@ -1,12 +1,13 @@
 # JavaScript Promises Notes
 
-Synchronous programming is blocking.
+- Synchronous programming is blocking.
 
-Asynchronous programming is non-blocking.
-In synchronous programming, tasks are performed one at a time.
+- Asynchronous programming is non-blocking.
 
-In asynchronous programming, tasks can be performed concurrently.
+- In synchronous programming, tasks are performed one at a time.
 
-`Callbacks`, ` Promises`, and `async/await` are common patterns in asynchronous programming.
+- In asynchronous programming, tasks can be performed concurrently.
 
-`Callback hell` is a problem where callbacks are nested within callbacks, making code hard to read and maintain.
+- `Callbacks`, ` Promises`, and `async/await` are common patterns in asynchronous programming.
+
+- `Callback hell` is a problem where callbacks are nested within callbacks, making code hard to read and maintain.

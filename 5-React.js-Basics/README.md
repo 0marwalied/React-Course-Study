@@ -1,30 +1,30 @@
 # React Basics Notes
 
-`yarn dev` - to run the development server
+- `yarn dev` - to run the development server
 
-`yarn build` - to create a production build
+- `yarn build` - to create a production build
 
-`yarn start` - to run the production build
+- `yarn start` - to run the production build
 
-`Public folder` contents are served as-is without processing
+- `Public folder` contents are served as-is without processing
 
-`main.tsx` file is called entry file
+- `main.tsx` file is called entry file
 
-`Root component` is the top-most component in the app `(App component)`
+- `Root component` is the top-most component in the app `(App component)`
 
-`React component` take only one parameter called `props`
+- `React component` take only one parameter called `props`
 
-`React component` it's just a function that returns JSX
+- `React component` it's just a function that returns JSX
 
-`React components` must start with a capital letter like `App` or `Header`
+- `React components` must start with a capital letter like `App` or `Header`
 
-`Export default` is used to export only one value from a file
+- `Export default` is used to export only one value from a file
 
-`Export only` is used to export multiple values from a file
+- `Export only` is used to export multiple values from a file
 
-`Fragment` is used to group multiple elements without adding extra nodes to the DOM
+- `Fragment` is used to group multiple elements without adding extra nodes to the DOM
 
-`JSX Rules:`
+- `JSX Rules:`
 
 1. You can only return one top-level element <br>
 2. Any element must include closing tag side <br>
