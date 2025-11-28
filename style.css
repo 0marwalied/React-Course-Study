@@ -17,45 +17,30 @@ ul {
   li {
     font-size: 1.1em;
     margin: 20px 0px;
-    code {
-      background-color: #f0f0f0;
-      padding: 2px 6px;
-      border-radius: 4px;
-      color: blue;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    correct {
-      background-color: #f0f0f0;
-      padding: 2px 6px;
-      border-radius: 4px;
-      color: green;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    wrong {
-      background-color: #f0f0f0;
-      padding: 2px 6px;
-      border-radius: 4px;
-      color: red;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    between {
-      background-color: #f0f0f0;
-      padding: 2px 6px;
-      border-radius: 4px;
-      color: orange;
-      cursor: pointer;
-      font-weight: bold;
-    }
+    code,
+    correct,
+    wrong,
+    between,
     file {
       background-color: #f0f0f0;
       padding: 2px 6px;
       border-radius: 4px;
-      color: firebrick;
-      cursor: pointer;
       font-weight: bold;
+    }
+    code {
+      color: blue;
+    }
+    correct {
+      color: green;
+    }
+    wrong {
+      color: red;
+    }
+    between {
+      color: orange;
+    }
+    file {
+      color: firebrick;
     }
   }
 }

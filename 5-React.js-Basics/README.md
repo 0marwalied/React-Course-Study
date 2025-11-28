@@ -1,73 +1,33 @@
-# React + TypeScript + Vite
+# React Basics Notes
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+`yarn dev` - to run the development server
 
-Currently, two official plugins are available:
+`yarn build` - to create a production build
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+`yarn start` - to run the production build
 
-## React Compiler
+`Public folder` contents are served as-is without processing
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+`main.tsx` file is called entry file
 
-## Expanding the ESLint configuration
+`Root component` is the top-most component in the app `(App component)`
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+`React component` take only one parameter called `props`
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+`React component` it's just a function that returns JSX
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+`React components` must start with a capital letter like `App` or `Header`
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+`Export default` is used to export only one value from a file
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+`Export only` is used to export multiple values from a file
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+`Fragment` is used to group multiple elements without adding extra nodes to the DOM
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+`JSX Rules:`
+
+1. You can only return one top-level element <br>
+2. Any element must include closing tag side <br>
+3. Component Name Must Capitalized <br>
+4. If you want to make an Expression in JSX you must wrapped it arround {} <br>
+5. When you gives a class to component user className insted`,
