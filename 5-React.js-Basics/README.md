@@ -26,8 +26,8 @@
 
 - `JSX Rules:`
 
-  1. You can only return one top-level element <br>
-  2. Any element must include closing tag side <br>
-  3. Component Name Must Capitalized <br>
-  4. If you want to make an Expression in JSX you must wrapped it arround {} <br>
+  1. You can only return one top-level element 
+  2. Any element must include closing tag side
+  3. Component Name Must Capitalized 
+  4. If you want to make an Expression in JSX you must wrapped it arround `{}`
   5. When you gives a class to component user className insted`,
