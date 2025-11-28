@@ -8,8 +8,6 @@
 - `keyof` can be used to get the keys of a type as a union.,
 - `Generic` types allow you to create reusable components that work with a variety of data types, Same as template in `c++`.
 
-  Example:
-
   ```ts
   function swap<T>(a: T, b: T): [T, T] {
     return [b, a];
@@ -18,8 +16,6 @@
 
 - Partial types with the `Partial<Any type>` utility type to make all properties of a type optional.
 - `index signature` to define types for objects with dynamic keys.
-
-  Example:
 
   ```ts
   interface StringNumberMap {

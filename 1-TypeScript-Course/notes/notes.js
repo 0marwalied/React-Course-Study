@@ -7,7 +7,6 @@ let notes = [
   `<code>keyof</code> can be used to get the keys of a type as a union.`,
   `<code>Generic</code> types allow you to create reusable components that work with a variety of data types, Same as template in <code>c++</code>.
   <br><br>
-  Example:
   <code>
   function swap&lt;T&gt;(a: T, b: T): [T, T] {
     return [b, a];
@@ -17,7 +16,6 @@ let notes = [
   `Partial types with the <code>Partial&lt;Any type&gt;</code> utility type to make all properties of a type optional.`,
   `<code>index signature</code> to define types for objects with dynamic keys.
   <br><br>
-  Example:
   <code>
   interface StringNumberMap {
     [key: string]: number;
