@@ -17,6 +17,9 @@ let notes = [
   3. Component Name Must Capitalized <br>
   4. If you want to make an Expression in <code>JSX</code> you must wrapped it arround <code>{}</code> <br>
   5. When you gives a class to component user className insted`,
+  `Inline Styling in <code>JSX</code> uses double curly braces like <code style="background-color: #f4f4f4;">style={{ color: 'red' }}</code>`,
+  `Index file is used to render the <code>Root Component</code> to the DOM`,
+  `<code>FC</code> stands for Functional Component <code>const App: FC&lt;TypeName&gt; = () =&gt; { ... }</code>`,
 ];
 
 let list = document.querySelector(`ul`);
