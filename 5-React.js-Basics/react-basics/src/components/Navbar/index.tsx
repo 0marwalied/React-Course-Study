@@ -1,14 +1,26 @@
 import "./index.scss";
 
-// type navList = {
-//   navList: string[];
-// };
-
-const Navbar = ({ navList }: { navList: string[] }) => {
-  console.log(navList);
+const Navbar = ({
+  navList,
+  isLogin,
+  setIsLogin,
+}: {
+  navList: string[];
+  isLogin: boolean;
+  setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   return (
     <>
-      <nav>10</nav>
+      <nav>
+        <ul>
+          {navList.map((navItem, index) => (
+            <li key={index}>{navItem}</li>
+          ))}
+          <button onClick={() => setIsLogin(!isLogin)}>
+            {isLogin ? "Logout" : "Login"}
+          </button>
+        </ul>
+      </nav>
     </>
   );
 };

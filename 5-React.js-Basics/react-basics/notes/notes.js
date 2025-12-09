@@ -20,6 +20,9 @@ let notes = [
   `Inline Styling in <code>JSX</code> uses double curly braces like <code style="background-color: #f4f4f4;">style={{ color: 'red' }}</code>`,
   `Index file is used to render the <code>Root Component</code> to the DOM`,
   `<code>FC</code> stands for Functional Component <code>const App: FC&lt;TypeName&gt; = () =&gt; { ... }</code>`,
+  `<code>key</code> is used to give a unique identifier to each element in a list, it helps React identify which items have changed, are added, or are removed`,
+  `<code>useState</code> is a React Hook that allows you to add state to functional components`,
+  `<code>useEffect</code> is a React Hook that allows you to perform side effects in functional components`,
 ];
 
 let list = document.querySelector(`ul`);

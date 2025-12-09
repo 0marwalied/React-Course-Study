@@ -26,3 +26,6 @@
   ```ts
   const App: FC<TypeName> = () => { ... }
   ```
+- `key` is used to give a unique identifier to each element in a list, it helps React identify which items have changed, are added, or are removed
+- `useState` is a React Hook that allows you to add state to functional components
+- `useEffect` is a React Hook that allows you to perform side effects in functional components
