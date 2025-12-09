@@ -11,6 +11,7 @@
 - `3-Synchronous-VS-Asynchronous-Programming`: Sync vs async concepts.
 - `4-Javascript-Promises`: Promise patterns and exercises.
 - `5-React.js-Basics`: Vite + React starter and notes.
+- `6-Project-1(React.js+TypeScript+Sass)`: Mini project with React, TS, and Sass.
 
 ## Notes
 
