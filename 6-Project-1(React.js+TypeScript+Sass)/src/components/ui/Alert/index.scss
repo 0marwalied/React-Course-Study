@@ -1,0 +1,42 @@
+$color: white;
+$borderColor: gray;
+$bgColor: #70707029;
+
+@mixin alert($name, $bgColor, $borderColor, $fontColor) {
+  .#{$name} {
+    width: 500px;
+    border: 2px dotted $borderColor;
+    padding: 20px 20px;
+    border-radius: 10px;
+    background-color: $bgColor;
+    color: $fontColor;
+    margin-bottom: 10px;
+    .alert-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+      .header {
+        display: flex;
+        gap: 10px;
+        h4 {
+          margin-top: -5px;
+        }
+      }
+
+      svg:last-child {
+        cursor: pointer;
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+}
+@include alert("alert-info", #70707029, gray, white);
+@include alert("alert-error", #380b0bab, #a67d7d, #e5a0a0);
+@include alert("alert-success", #0f340f, #79cd79, #2bb52b);
+@include alert("alert-warning", #3d3d0f, #e3e35a, #cbcb41);
+@include alert("alert-note", #2b104377, #6b2590, #9754d1);
