@@ -14,7 +14,7 @@ const ProductCard = ({ product }: IProps) => {
 
       <h3 className="font-bold">{title}</h3>
 
-      <p className="text-sm">{handleDesciption(description, 40)}</p>
+      <p className="text-sm">{handleDesciption(description)}</p>
 
       <ul className="flex space-x-1 h-10">{renderColors(colors, 5)}</ul>
 

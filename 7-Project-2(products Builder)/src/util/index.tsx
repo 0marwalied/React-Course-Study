@@ -25,7 +25,7 @@ export const renderColors = (colors: string[], max: number = 5) => {
 
 export const handleDesciption = (
   description: string,
-  max: number = 50
+  max: number = 40
 ): string => {
   if (description.length > max) return `${description.substring(0, max)}...`;
   return description;
