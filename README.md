@@ -12,6 +12,7 @@
 - `4-Javascript-Promises`: Promise patterns and exercises.
 - `5-React.js-Basics`: Vite + React starter and notes.
 - `6-Project-1(React.js+TypeScript+Sass)`: Mini project with React, TS, and Sass.
+- `7-Project-2(React.js+TypeScript+TailwindCSS)`: Mini project with React, TS, and Tailwind CSS.
 
 ## Notes
 
