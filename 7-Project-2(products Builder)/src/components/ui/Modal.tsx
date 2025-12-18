@@ -1,14 +1,14 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment } from "react";
-import Button from "./Button";
+import { Fragment, type ReactNode } from "react";
 
 interface IProps {
   isOpen: boolean;
   closeModal: () => void;
   title?: string;
+  children: ReactNode;
 }
 
-export default function Modal({ isOpen, closeModal, title }: IProps) {
+export default function Modal({ isOpen, closeModal, title, children }: IProps) {
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>
@@ -39,16 +39,11 @@ export default function Modal({ isOpen, closeModal, title }: IProps) {
                 <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <Dialog.Title
                     as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900"
+                    className="text-lg font-bold leading-6 text-gray-900 "
                   >
                     {title}
                   </Dialog.Title>
-                  <div className="flex space-x-2">
-                    <Button color="blue">EDIT</Button>
-                    <Button color="red" onClick={closeModal}>
-                      CLOSE
-                    </Button>
-                  </div>
+                  {children}
                 </Dialog.Panel>
               </Transition.Child>
             </div>
