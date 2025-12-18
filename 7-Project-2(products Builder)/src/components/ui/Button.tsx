@@ -2,7 +2,7 @@ import { type HtmlHTMLAttributes, type ReactNode } from "react";
 
 interface Iprops extends HtmlHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
-  color: string;
+  color?: string;
   width?: "full" | "fit";
 }
 
