@@ -1,11 +1,13 @@
+import { productList } from "../data";
 import type { IProduct } from "../interfaces";
-import { handleDesciption, renderColors } from "../util";
+import { handleDesciption, removeThisElement, renderColors } from "../util";
 import Image from "./Image";
 import Button from "./ui/Button";
 
 interface IProps {
   product: IProduct;
 }
+
 const ProductCard = ({ product }: IProps) => {
   const { imageURL, title, id, description, colors, price, category } = product;
   const renderdedColors = renderColors(colors),
@@ -34,7 +36,12 @@ const ProductCard = ({ product }: IProps) => {
 
       <div className="flex justify-between gap-2">
         <Button color="blue">EDIT</Button>
-        <Button color="red">REMOVE</Button>
+        <Button
+          color="red"
+          onClick={() => removeThisElement(product, productList)}
+        >
+          REMOVE
+        </Button>
       </div>
     </div>
   );

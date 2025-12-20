@@ -1,11 +1,39 @@
-import { useState } from "react";
+import { useState, type ChangeEvent } from "react";
 import ProductCard from "./components/ProductCard";
 import Button from "./components/ui/Button";
 import Modal from "./components/ui/Modal";
 import { formInputsList, productList } from "./data";
 import Input from "./components/ui/Input";
+import { addNewElement } from "./util";
 
 const App = () => {
+  //State
+  const [isOpen, setIsOpen] = useState(false);
+  const [product, setProduct] = useState({
+    id: "",
+    title: "",
+    description: "",
+    imageURL: "",
+    price: "",
+    colors: [],
+    category: {
+      name: "",
+      imageURL: "",
+    },
+  });
+
+  // Handler
+  const closeModal = () => setIsOpen(false);
+  const openModal = () => setIsOpen(true);
+
+  const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setProduct({
+      ...product,
+      [name]: value,
+    });
+  };
+
   //Render
   const renderFormInputs = formInputsList.map(function (input) {
     return (
@@ -13,20 +41,19 @@ const App = () => {
         <label htmlFor={input.id} className="font-medium">
           {input.label}
         </label>
-        <Input name={input.name} id={input.id} type="text" />
+        <Input
+          name={input.name}
+          id={input.id}
+          type="text"
+          value={product[`${input.name}`]}
+          onChange={onChangeHandler}
+        />
       </div>
     );
   });
   const renderProductList = productList.map(function (product) {
     return <ProductCard product={product} />;
   });
-
-  //State
-  const [isOpen, setIsOpen] = useState(false);
-
-  // Handler
-  const closeModal = () => setIsOpen(false);
-  const openModal = () => setIsOpen(true);
 
   return (
     <>
@@ -36,10 +63,18 @@ const App = () => {
         </Button>
 
         <Modal isOpen={isOpen} title="ADD New Element" closeModal={closeModal}>
-          <form className="space-y-3 mt-2">
+          <form className="space-y-3 mt-2" onSubmit={(e) => e.preventDefault()}>
             {renderFormInputs}
             <div className="flex space-x-2">
-              <Button color="blue">EDIT</Button>
+              <Button
+                color="blue"
+                onClick={() => {
+                  addNewElement(product);
+                  closeModal();
+                }}
+              >
+                Submit
+              </Button>
               <Button color="red" onClick={closeModal}>
                 CLOSE
               </Button>

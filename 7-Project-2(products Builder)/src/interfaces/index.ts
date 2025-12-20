@@ -6,7 +6,7 @@ export interface ICategory {
 
 export interface IFormInput {
   id: string;
-  name: string;
+  name: "title" | "description" | "price" | "imageURL";
   label: string;
   type: string;
 }
