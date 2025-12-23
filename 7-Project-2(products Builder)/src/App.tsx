@@ -1,15 +1,13 @@
-import { useState, type ChangeEvent } from "react";
+import { useState, type ChangeEvent, type FormEvent } from "react";
 import ProductCard from "./components/ProductCard";
 import Button from "./components/ui/Button";
 import Modal from "./components/ui/Modal";
 import { formInputsList, productList } from "./data";
 import Input from "./components/ui/Input";
-import { addNewElement } from "./util";
+import type { IProduct } from "./interfaces";
 
 const App = () => {
-  //State
-  const [isOpen, setIsOpen] = useState(false);
-  const [product, setProduct] = useState({
+  const defaultProductObj = {
     id: "",
     title: "",
     description: "",
@@ -20,12 +18,14 @@ const App = () => {
       name: "",
       imageURL: "",
     },
-  });
+  };
+  //State
+  const [isOpen, setIsOpen] = useState(false);
+  const [product, setProduct] = useState<IProduct>(defaultProductObj);
 
   // Handler
   const closeModal = () => setIsOpen(false);
   const openModal = () => setIsOpen(true);
-
   const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setProduct({
@@ -33,11 +33,20 @@ const App = () => {
       [name]: value,
     });
   };
+  const onSubmitHandler = (event: FormEvent<HTMLFormElement>): void => {
+    event.preventDefault();
+    console.log(product);
+  };
+  const onCancel = () => {
+    console.log("Canceled");
+    setProduct(defaultProductObj);
+    closeModal();
+  };
 
   //Render
   const renderFormInputs = formInputsList.map(function (input) {
     return (
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1" key={input.id}>
         <label htmlFor={input.id} className="font-medium">
           {input.label}
         </label>
@@ -45,14 +54,14 @@ const App = () => {
           name={input.name}
           id={input.id}
           type="text"
-          value={product[`${input.name}`]}
+          value={product[input.name]}
           onChange={onChangeHandler}
         />
       </div>
     );
   });
   const renderProductList = productList.map(function (product) {
-    return <ProductCard product={product} />;
+    return <ProductCard product={product} key={product.id} />;
   });
 
   return (
@@ -63,20 +72,12 @@ const App = () => {
         </Button>
 
         <Modal isOpen={isOpen} title="ADD New Element" closeModal={closeModal}>
-          <form className="space-y-3 mt-2" onSubmit={(e) => e.preventDefault()}>
+          <form className="space-y-3 mt-2" onSubmit={onSubmitHandler}>
             {renderFormInputs}
             <div className="flex space-x-2">
-              <Button
-                color="blue"
-                onClick={() => {
-                  addNewElement(product);
-                  closeModal();
-                }}
-              >
-                Submit
-              </Button>
-              <Button color="red" onClick={closeModal}>
-                CLOSE
+              <Button color="blue">Submit</Button>
+              <Button color="red" onClick={onCancel}>
+                Cancel
               </Button>
             </div>
           </form>

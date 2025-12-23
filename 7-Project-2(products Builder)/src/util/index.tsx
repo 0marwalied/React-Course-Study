@@ -9,6 +9,7 @@ export const renderColors = (colors: string[], max: number = 5) => {
         {colors.map((color, index) =>
           index < max ? (
             <li
+              key={index} // I think this is wrong but I will keep it now
               className="rounded-4xl w-5 h-5 cursor-pointer"
               style={{ backgroundColor: color }}
             ></li>
@@ -18,8 +19,9 @@ export const renderColors = (colors: string[], max: number = 5) => {
       </>
     );
   }
-  return colors.map((color) => (
+  return colors.map((color, index) => (
     <li
+      key={index} // I think this is wrong but I will keep it now
       className="rounded-4xl w-5 h-5 cursor-pointer"
       style={{ backgroundColor: color }}
     ></li>

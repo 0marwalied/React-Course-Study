@@ -1,6 +1,5 @@
-import { productList } from "../data";
 import type { IProduct } from "../interfaces";
-import { handleDesciption, removeThisElement, renderColors } from "../util";
+import { handleDesciption, renderColors } from "../util";
 import Image from "./Image";
 import Button from "./ui/Button";
 
@@ -36,12 +35,7 @@ const ProductCard = ({ product }: IProps) => {
 
       <div className="flex justify-between gap-2">
         <Button color="blue">EDIT</Button>
-        <Button
-          color="red"
-          onClick={() => removeThisElement(product, productList)}
-        >
-          REMOVE
-        </Button>
+        <Button color="red">REMOVE</Button>
       </div>
     </div>
   );
