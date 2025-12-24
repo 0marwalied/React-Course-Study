@@ -5,6 +5,7 @@ import Modal from "./components/ui/Modal";
 import { formInputsList, productList } from "./data";
 import Input from "./components/ui/Input";
 import type { IProduct } from "./interfaces";
+import { productValidation } from "./validation";
 
 const App = () => {
   const defaultProductObj = {
@@ -35,7 +36,9 @@ const App = () => {
   };
   const onSubmitHandler = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
-    console.log(product);
+    const errors = productValidation(product);
+    const hasErrorMsg = !Object.values(errors).every((value) => value === "");
+    if (hasErrorMsg) return;
   };
   const onCancel = () => {
     console.log("Canceled");
