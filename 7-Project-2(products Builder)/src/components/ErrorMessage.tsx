@@ -1,0 +1,10 @@
+interface Iprops {
+  msg: string;
+}
+
+const ErrorMessage = ({ msg }: Iprops) => {
+  return msg ? (
+    <span className="text-red-500 block font-semibold text-sm">{msg}</span>
+  ) : null;
+};
+export default ErrorMessage;

@@ -2,10 +2,12 @@ import { useState, type ChangeEvent, type FormEvent } from "react";
 import ProductCard from "./components/ProductCard";
 import Button from "./components/ui/Button";
 import Modal from "./components/ui/Modal";
-import { formInputsList, productList } from "./data";
+import { colors, formInputsList, productList } from "./data";
 import Input from "./components/ui/Input";
 import type { IProduct } from "./interfaces";
 import { productValidation } from "./validation";
+import ErrorMessage from "./components/ErrorMessage";
+import { renderColors } from "./util";
 
 const App = () => {
   const defaultProductObj = {
@@ -23,6 +25,12 @@ const App = () => {
   //State
   const [isOpen, setIsOpen] = useState(false);
   const [product, setProduct] = useState<IProduct>(defaultProductObj);
+  const [errors, setErrors] = useState({
+    title: "",
+    description: "",
+    imageURL: "",
+    price: "",
+  });
 
   // Handler
   const closeModal = () => setIsOpen(false);
@@ -33,16 +41,28 @@ const App = () => {
       ...product,
       [name]: value,
     });
+
+    setErrors({
+      ...errors,
+      [name]: "",
+    });
   };
   const onSubmitHandler = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
     const errors = productValidation(product);
+    setErrors(errors);
     const hasErrorMsg = !Object.values(errors).every((value) => value === "");
     if (hasErrorMsg) return;
   };
   const onCancel = () => {
-    console.log("Canceled");
+    console.log("here->");
     setProduct(defaultProductObj);
+    setErrors({
+      title: "",
+      description: "",
+      price: "",
+      imageURL: "",
+    });
     closeModal();
   };
 
@@ -60,6 +80,7 @@ const App = () => {
           value={product[input.name]}
           onChange={onChangeHandler}
         />
+        <ErrorMessage msg={errors[input.name]} />
       </div>
     );
   });
@@ -77,6 +98,9 @@ const App = () => {
         <Modal isOpen={isOpen} title="ADD New Element" closeModal={closeModal}>
           <form className="space-y-3 mt-2" onSubmit={onSubmitHandler}>
             {renderFormInputs}
+            <ul className="flex space-x-2">
+              {renderColors(colors, colors.length)}
+            </ul>
             <div className="flex space-x-2">
               <Button color="blue">Submit</Button>
               <Button color="red" onClick={onCancel}>
