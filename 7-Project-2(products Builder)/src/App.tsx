@@ -98,7 +98,7 @@ const App = () => {
         <Modal isOpen={isOpen} title="ADD New Element" closeModal={closeModal}>
           <form className="space-y-3 mt-2" onSubmit={onSubmitHandler}>
             {renderFormInputs}
-            <ul className="flex space-x-2">
+            <ul className="flex space-x-2 flex-wrap space-y-1">
               {renderColors(colors, colors.length)}
             </ul>
             <div className="flex space-x-2">
