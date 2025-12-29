@@ -5,6 +5,7 @@ interface Iprops extends HtmlHTMLAttributes<HTMLButtonElement> {
   color: string;
   width?: "full" | "fit";
   className?: string;
+  type?: "button" | "submit" | "reset";
 }
 
 const Button = ({

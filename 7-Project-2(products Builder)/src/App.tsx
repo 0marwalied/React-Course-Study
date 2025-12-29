@@ -7,7 +7,8 @@ import Input from "./components/ui/Input";
 import type { IProduct } from "./interfaces";
 import { productValidation } from "./validation";
 import ErrorMessage from "./components/ErrorMessage";
-import { renderColors } from "./util";
+import CircleColor from "./components/CircleColor";
+import { v4 as uuid } from "uuid";
 
 const App = () => {
   const defaultProductObj = {
@@ -22,15 +23,18 @@ const App = () => {
       imageURL: "",
     },
   };
-  //State
-  const [isOpen, setIsOpen] = useState(false);
-  const [product, setProduct] = useState<IProduct>(defaultProductObj);
-  const [errors, setErrors] = useState({
+  const defaultErrosObj = {
     title: "",
     description: "",
     imageURL: "",
     price: "",
-  });
+  };
+  //State
+  const [isOpen, setIsOpen] = useState(false);
+  const [product, setProduct] = useState<IProduct>(defaultProductObj);
+  const [products, setProducts] = useState<IProduct[]>(productList);
+  const [errors, setErrors] = useState(defaultErrosObj);
+  const [tempColors, setTempColors] = useState<string[]>([]);
 
   // Handler
   const closeModal = () => setIsOpen(false);
@@ -47,22 +51,30 @@ const App = () => {
       [name]: "",
     });
   };
+
   const onSubmitHandler = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
     const errors = productValidation(product);
     setErrors(errors);
     const hasErrorMsg = !Object.values(errors).every((value) => value === "");
     if (hasErrorMsg) return;
-  };
-  const onCancel = () => {
-    console.log("here->");
+    setProducts((prev) => [
+      ...prev,
+      {
+        ...product,
+        colors: tempColors,
+        id: uuid(),
+      },
+    ]);
     setProduct(defaultProductObj);
-    setErrors({
-      title: "",
-      description: "",
-      price: "",
-      imageURL: "",
-    });
+    setTempColors([]);
+    setErrors(defaultErrosObj);
+    closeModal();
+  };
+
+  const onCancel = () => {
+    setProduct(defaultProductObj);
+    setErrors(defaultErrosObj);
     closeModal();
   };
 
@@ -84,31 +96,64 @@ const App = () => {
       </div>
     );
   });
-  const renderProductList = productList.map(function (product) {
+  const renderProductColor = colors.map((color) => (
+    <CircleColor
+      color={color}
+      key={color}
+      onClick={() => {
+        if (tempColors.includes(color)) {
+          setTempColors(tempColors.filter((item) => item != color));
+          return;
+        } else setTempColors((prev) => [...prev, color]);
+      }}
+    />
+  ));
+  const renderProductList = products.map(function (product) {
     return <ProductCard product={product} key={product.id} />;
   });
 
   return (
     <>
       <main className="container mx-auto p-18 space-y-2">
-        <Button color="red" width="full" onClick={openModal}>
+        <Button
+          color="red"
+          width="full"
+          onClick={() => {
+            setProduct(defaultProductObj);
+            const errors = defaultErrosObj;
+            setErrors(errors);
+            openModal();
+            setTempColors([]);
+          }}
+        >
           ADD
         </Button>
 
         <Modal isOpen={isOpen} title="ADD New Element" closeModal={closeModal}>
           <form className="space-y-3 mt-2" onSubmit={onSubmitHandler}>
             {renderFormInputs}
+            <div className="flex gap-1 flex-wrap">
+              {tempColors.map((color) => (
+                <span
+                  className="p-1 text-white rounded-md"
+                  style={{ backgroundColor: color }}
+                >
+                  {color}
+                </span>
+              ))}
+            </div>
             <ul className="flex space-x-2 flex-wrap space-y-1">
-              {renderColors(colors, colors.length)}
+              {renderProductColor}
             </ul>
             <div className="flex space-x-2">
               <Button color="blue">Submit</Button>
-              <Button color="red" onClick={onCancel}>
+              <Button color="red" type="button" onClick={onCancel}>
                 Cancel
               </Button>
             </div>
           </form>
         </Modal>
+
         <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full">
           {renderProductList}
         </div>

@@ -1,18 +1,13 @@
 import { v4 as uuid } from "uuid";
 import type { IProduct } from "../interfaces";
 import { productList } from "../data";
+import CircleColor from "../components/CircleColor";
 export const renderColors = (colors: string[], max: number = 5) => {
   const remain = colors.length - max;
   return (
     <>
       {colors.map((color, index) =>
-        index < max ? (
-          <li
-            key={index} // I think this is wrong but I will keep it now
-            className="rounded-4xl w-5 h-5 cursor-pointer"
-            style={{ backgroundColor: color }}
-          ></li>
-        ) : null
+        index < max ? <CircleColor key={index} color={color} /> : null
       )}
       {remain > 0 && <p>+{remain}</p>}
     </>
