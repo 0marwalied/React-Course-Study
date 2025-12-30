@@ -9,6 +9,7 @@ import { productValidation } from "./validation";
 import ErrorMessage from "./components/ErrorMessage";
 import CircleColor from "./components/CircleColor";
 import { v4 as uuid } from "uuid";
+import Select from "./components/ui/Select";
 
 const App = () => {
   const defaultProductObj = {
@@ -59,12 +60,16 @@ const App = () => {
     const hasErrorMsg = !Object.values(errors).every((value) => value === "");
     if (hasErrorMsg) return;
     setProducts((prev) => [
-      ...prev,
       {
         ...product,
-        colors: tempColors,
         id: uuid(),
+        category: {
+          name: "Publisher",
+          imageURL: product.imageURL,
+        },
+        colors: tempColors,
       },
+      ...prev,
     ]);
     setProduct(defaultProductObj);
     setTempColors([]);
@@ -102,7 +107,7 @@ const App = () => {
       key={color}
       onClick={() => {
         if (tempColors.includes(color)) {
-          setTempColors(tempColors.filter((item) => item != color));
+          setTempColors((prev) => prev.filter((item) => item !== color));
           return;
         } else setTempColors((prev) => [...prev, color]);
       }}
@@ -132,9 +137,11 @@ const App = () => {
         <Modal isOpen={isOpen} title="ADD New Element" closeModal={closeModal}>
           <form className="space-y-3 mt-2" onSubmit={onSubmitHandler}>
             {renderFormInputs}
+            <Select />
             <div className="flex gap-1 flex-wrap">
               {tempColors.map((color) => (
                 <span
+                  key={color}
                   className="p-1 text-white rounded-md"
                   style={{ backgroundColor: color }}
                 >

@@ -25,7 +25,7 @@ const ProductCard = ({ product }: IProps) => {
         <p className="text-md font-bold text-blue-700">${price}</p>
         <div className="flex items-center gap-1">
           <Image
-            imageUrl={category.imageURL}
+            imageUrl={category.imageURL || "#"}
             alt="Publisher"
             className="w-10 h-10 rounded-full"
           />
