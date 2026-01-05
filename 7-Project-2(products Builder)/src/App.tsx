@@ -2,7 +2,7 @@ import { useState, type ChangeEvent, type FormEvent } from "react";
 import ProductCard from "./components/ProductCard";
 import Button from "./components/ui/Button";
 import Modal from "./components/ui/Modal";
-import { colors, formInputsList, productList } from "./data";
+import { categories, colors, formInputsList, productList } from "./data";
 import Input from "./components/ui/Input";
 import type { IProduct } from "./interfaces";
 import { productValidation } from "./validation";
@@ -29,6 +29,7 @@ const App = () => {
     description: "",
     imageURL: "",
     price: "",
+    colors: "",
   };
   //State
   const [isOpen, setIsOpen] = useState(false);
@@ -36,6 +37,7 @@ const App = () => {
   const [products, setProducts] = useState<IProduct[]>(productList);
   const [errors, setErrors] = useState(defaultErrosObj);
   const [tempColors, setTempColors] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState(categories[0]);
 
   // Handler
   const closeModal = () => setIsOpen(false);
@@ -55,22 +57,18 @@ const App = () => {
 
   const onSubmitHandler = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
-    const errors = productValidation(product);
+    const newProduct = {
+      ...product,
+      id: uuid(),
+      category: selectedCategory,
+      colors: tempColors,
+    };
+    setProduct(newProduct);
+    const errors = productValidation(newProduct);
     setErrors(errors);
     const hasErrorMsg = !Object.values(errors).every((value) => value === "");
     if (hasErrorMsg) return;
-    setProducts((prev) => [
-      {
-        ...product,
-        id: uuid(),
-        category: {
-          name: "Publisher",
-          imageURL: product.imageURL,
-        },
-        colors: tempColors,
-      },
-      ...prev,
-    ]);
+    setProducts((prev) => [newProduct, ...prev]);
     setProduct(defaultProductObj);
     setTempColors([]);
     setErrors(defaultErrosObj);
@@ -137,7 +135,10 @@ const App = () => {
         <Modal isOpen={isOpen} title="ADD New Element" closeModal={closeModal}>
           <form className="space-y-3 mt-2" onSubmit={onSubmitHandler}>
             {renderFormInputs}
-            <Select />
+            <Select
+              selected={selectedCategory}
+              setSelected={setSelectedCategory}
+            />
             <div className="flex gap-1 flex-wrap">
               {tempColors.map((color) => (
                 <span
@@ -152,6 +153,7 @@ const App = () => {
             <ul className="flex space-x-2 flex-wrap space-y-1">
               {renderProductColor}
             </ul>
+            {!tempColors.length && <ErrorMessage msg={errors["colors"]} />}
             <div className="flex space-x-2">
               <Button color="blue">Submit</Button>
               <Button color="red" type="button" onClick={onCancel}>

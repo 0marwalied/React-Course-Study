@@ -1,18 +1,22 @@
+import type { IProduct } from "../interfaces";
+
 type Tproduct = {
   title: string;
   description: string;
   imageURL: string;
   price: string;
+  colors: string;
 };
 
-export const productValidation = (product: Tproduct) => {
+export const productValidation = (product: IProduct) => {
   const errors: Tproduct = {
     title: "",
     description: "",
     imageURL: "",
     price: "",
+    colors: "",
   };
-  const { title, description, imageURL, price } = product;
+  const { title, description, imageURL, price, colors } = product;
 
   const validUrl = /^(ftp|http|https):\/\/[^\s]+\.[^\s]+$/.test(imageURL);
 
@@ -30,5 +34,6 @@ export const productValidation = (product: Tproduct) => {
     errors.imageURL = "Valid image URL is required!";
   if (!price.trim() || isNaN(Number(price)))
     errors.price = "Valid price is required!";
+  if (!colors.length) errors.colors = "Product colors should be at least one!";
   return errors;
 };

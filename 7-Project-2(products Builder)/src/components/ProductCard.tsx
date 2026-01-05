@@ -29,7 +29,6 @@ const ProductCard = ({ product }: IProps) => {
             alt="Publisher"
             className="w-10 h-10 rounded-full"
           />
-          <h4 className="font-medium">{category.name}</h4>
         </div>
       </div>
 
