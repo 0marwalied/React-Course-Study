@@ -33,15 +33,24 @@ const App = () => {
   };
   //State
   const [isOpen, setIsOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
   const [product, setProduct] = useState<IProduct>(defaultProductObj);
   const [products, setProducts] = useState<IProduct[]>(productList);
   const [errors, setErrors] = useState(defaultErrosObj);
   const [tempColors, setTempColors] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState(categories[0]);
+  const [editedProduct, setEditedProduct] =
+    useState<IProduct>(defaultProductObj);
 
   // Handler
   const closeModal = () => setIsOpen(false);
   const openModal = () => setIsOpen(true);
+  const closeEditModal = () => setIsEditOpen(false);
+  const openEditModal = () => {
+    setTempColors(editedProduct.colors);
+    setIsEditOpen(true);
+  };
+
   const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setProduct({
@@ -78,41 +87,54 @@ const App = () => {
   const onCancel = () => {
     setProduct(defaultProductObj);
     setErrors(defaultErrosObj);
+    closeEditModal();
     closeModal();
   };
 
   //Render
-  const renderFormInputs = formInputsList.map(function (input) {
-    return (
-      <div className="flex flex-col gap-1" key={input.id}>
-        <label htmlFor={input.id} className="font-medium">
-          {input.label}
-        </label>
-        <Input
-          name={input.name}
-          id={input.id}
-          type="text"
-          value={product[input.name]}
-          onChange={onChangeHandler}
-        />
-        <ErrorMessage msg={errors[input.name]} />
-      </div>
-    );
-  });
-  const renderProductColor = colors.map((color) => (
-    <CircleColor
-      color={color}
-      key={color}
-      onClick={() => {
-        if (tempColors.includes(color)) {
-          setTempColors((prev) => prev.filter((item) => item !== color));
-          return;
-        } else setTempColors((prev) => [...prev, color]);
-      }}
-    />
-  ));
+  const renderFormInputs = (product: IProduct) =>
+    formInputsList.map(function (input) {
+      return (
+        <div className="flex flex-col gap-1" key={input.id}>
+          <label htmlFor={input.id} className="font-medium">
+            {input.label}
+          </label>
+          <Input
+            name={input.name}
+            id={input.id}
+            type="text"
+            value={product[input.name]}
+            onChange={onChangeHandler}
+          />
+          <ErrorMessage msg={errors[input.name]} />
+        </div>
+      );
+    });
+
+  const renderProductColor = (colors: string[]) => {
+    return colors.map((color) => (
+      <CircleColor
+        color={color}
+        key={color}
+        onClick={() => {
+          if (tempColors.includes(color)) {
+            setTempColors((prev) => prev.filter((item) => item !== color));
+            return;
+          } else setTempColors((prev) => [...prev, color]);
+        }}
+      />
+    ));
+  };
+
   const renderProductList = products.map(function (product) {
-    return <ProductCard product={product} key={product.id} />;
+    return (
+      <ProductCard
+        product={product}
+        key={product.id}
+        setEditedProduct={setEditedProduct}
+        openEditModal={openEditModal}
+      />
+    );
   });
 
   return (
@@ -131,10 +153,46 @@ const App = () => {
         >
           ADD
         </Button>
-
+        {/* Add New Element Modal */}
         <Modal isOpen={isOpen} title="ADD New Element" closeModal={closeModal}>
           <form className="space-y-3 mt-2" onSubmit={onSubmitHandler}>
-            {renderFormInputs}
+            {renderFormInputs(product)}
+            <Select
+              selected={{ ...editedProduct.category, id: uuid() }}
+              setSelected={setSelectedCategory}
+            />
+            <div className="flex gap-1 flex-wrap">
+              {tempColors.map((color) => (
+                <span
+                  key={color}
+                  className="p-1 text-white rounded-md"
+                  style={{ backgroundColor: color }}
+                >
+                  {color}
+                </span>
+              ))}
+            </div>
+            <ul className="flex space-x-2 flex-wrap space-y-1">
+              {renderProductColor(colors)}
+            </ul>
+            {!tempColors.length && <ErrorMessage msg={errors["colors"]} />}
+            <div className="flex space-x-2">
+              <Button color="blue">Submit</Button>
+              <Button color="red" type="button" onClick={onCancel}>
+                Cancel
+              </Button>
+            </div>
+          </form>
+        </Modal>
+
+        {/* Edit Current Element Modal */}
+        <Modal
+          isOpen={isEditOpen}
+          title="Edit This Product"
+          closeModal={closeEditModal}
+        >
+          <form className="space-y-3 mt-2" onSubmit={onSubmitHandler}>
+            {renderFormInputs(editedProduct)}
             <Select
               selected={selectedCategory}
               setSelected={setSelectedCategory}
@@ -151,7 +209,7 @@ const App = () => {
               ))}
             </div>
             <ul className="flex space-x-2 flex-wrap space-y-1">
-              {renderProductColor}
+              {renderProductColor(editedProduct.colors)}
             </ul>
             {!tempColors.length && <ErrorMessage msg={errors["colors"]} />}
             <div className="flex space-x-2">

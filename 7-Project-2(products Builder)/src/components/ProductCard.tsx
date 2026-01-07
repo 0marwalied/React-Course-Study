@@ -5,12 +5,21 @@ import Button from "./ui/Button";
 
 interface IProps {
   product: IProduct;
+  setEditedProduct: (product: IProduct) => void;
+  openEditModal: () => void;
 }
 
-const ProductCard = ({ product }: IProps) => {
+const ProductCard = ({ product, setEditedProduct, openEditModal }: IProps) => {
   const { imageURL, title, id, description, colors, price, category } = product;
   const renderdedColors = renderColors(colors),
     handldedDesciption = handleDesciption(description);
+
+  function onEdit(): void {
+    console.log(product);
+    setEditedProduct(product);
+    openEditModal();
+  }
+
   return (
     <div className="border rounded-md p-2 flex flex-col gap-3" key={id}>
       <Image imageUrl={imageURL} alt={"Product Name"} className="h-full" />
@@ -33,7 +42,9 @@ const ProductCard = ({ product }: IProps) => {
       </div>
 
       <div className="flex justify-between gap-2">
-        <Button color="blue">EDIT</Button>
+        <Button color="blue" onClick={onEdit}>
+          EDIT
+        </Button>
         <Button color="red">REMOVE</Button>
       </div>
     </div>
