@@ -147,20 +147,18 @@ const App = () => {
       );
     });
 
-  const renderProductColor = (colors: string[]) => {
-    return colors.map((color) => (
-      <CircleColor
-        color={color}
-        key={color}
-        onClick={() => {
-          if (tempColors.includes(color)) {
-            setTempColors((prev) => prev.filter((item) => item !== color));
-            return;
-          } else setTempColors((prev) => [...prev, color]);
-        }}
-      />
-    ));
-  };
+  const renderProductColor = colors.map((color) => (
+    <CircleColor
+      color={color}
+      key={color}
+      onClick={() => {
+        if (tempColors.includes(color)) {
+          setTempColors((prev) => prev.filter((item) => item !== color));
+          return;
+        } else setTempColors((prev) => [...prev, color]);
+      }}
+    />
+  ));
 
   const renderProductList = products.map(function (product, idx) {
     return (
@@ -216,7 +214,7 @@ const App = () => {
             </div>
 
             <ul className="flex space-x-2 flex-wrap space-y-1">
-              {renderProductColor(colors)}
+              {renderProductColor}
             </ul>
             {!tempColors.length && <ErrorMessage msg={errors["colors"]} />}
 
@@ -259,7 +257,7 @@ const App = () => {
             </div>
 
             <ul className="flex space-x-2 flex-wrap space-y-1">
-              {renderProductColor(editedProduct.colors)}
+              {renderProductColor}
             </ul>
             {!tempColors.length && <ErrorMessage msg={errors["colors"]} />}
 
