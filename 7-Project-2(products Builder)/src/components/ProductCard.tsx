@@ -73,7 +73,8 @@ const ProductCard = ({
 
       <div className="flex items-center justify-between">
         <p className="text-md font-bold text-blue-700">${handlePrice(price)}</p>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-2">
+          <span className="font-medium">{category.name}</span>
           <Image
             imageUrl={category.imageURL || "#"}
             alt="Publisher"

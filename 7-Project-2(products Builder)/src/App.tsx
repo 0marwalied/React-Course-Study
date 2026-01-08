@@ -57,7 +57,9 @@ const App = () => {
       return prod.id != product.id;
     });
     setProducts(newProducts);
-    toast("The product deleted sucessfuly");
+    toast("The product deleted sucessfuly", {
+      icon: "👏",
+    });
   };
 
   const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -96,6 +98,9 @@ const App = () => {
     setTempColors([]);
     setErrors(defaultErrosObj);
     closeModal();
+    toast("The product added sucessfuly", {
+      icon: "👏",
+    });
   };
 
   const onSubmitEditProductHanlder = (event: FormEvent<HTMLFormElement>) => {
@@ -118,6 +123,9 @@ const App = () => {
     setTempColors([]);
     setErrors(defaultErrosObj);
     closeEditModal();
+    toast("The product edited sucessfuly", {
+      icon: "👏",
+    });
   };
 
   const onCancel = () => {
