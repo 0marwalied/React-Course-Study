@@ -7,16 +7,24 @@ interface IProps {
   product: IProduct;
   setEditedProduct: (product: IProduct) => void;
   openEditModal: () => void;
+  setTempColors: (colors: string[]) => void;
+  removeItem: (product: IProduct) => void;
 }
 
-const ProductCard = ({ product, setEditedProduct, openEditModal }: IProps) => {
+const ProductCard = ({
+  product,
+  setEditedProduct,
+  openEditModal,
+  setTempColors,
+  removeItem,
+}: IProps) => {
   const { imageURL, title, id, description, colors, price, category } = product;
   const renderdedColors = renderColors(colors),
     handldedDesciption = handleDesciption(description);
 
   function onEdit(): void {
-    console.log(product);
     setEditedProduct(product);
+    setTempColors(product.colors);
     openEditModal();
   }
 
@@ -45,7 +53,9 @@ const ProductCard = ({ product, setEditedProduct, openEditModal }: IProps) => {
         <Button color="blue" onClick={onEdit}>
           EDIT
         </Button>
-        <Button color="red">REMOVE</Button>
+        <Button color="red" onClick={() => removeItem(product)}>
+          REMOVE
+        </Button>
       </div>
     </div>
   );
