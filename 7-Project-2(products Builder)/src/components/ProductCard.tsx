@@ -13,6 +13,20 @@ interface IProps {
   setSelectedCategory: (category: ICategory) => void;
 }
 
+const handlePrice = (price: string) => {
+  const len = price.length;
+  let idx = ((len % 3) - 1 + 3) % 3;
+  let newPrice = "";
+  for (let i = 0; i < len; i++) {
+    newPrice = newPrice + price[i];
+    if (idx === i && i != len - 1) {
+      newPrice = newPrice + ",";
+      idx += 3;
+    }
+  }
+  return newPrice;
+};
+
 const ProductCard = ({
   product,
   setEditedProduct,
@@ -46,7 +60,7 @@ const ProductCard = ({
       <ul className="flex space-x-1 h-10">{renderdedColors}</ul>
 
       <div className="flex items-center justify-between">
-        <p className="text-md font-bold text-blue-700">${price}</p>
+        <p className="text-md font-bold text-blue-700">${handlePrice(price)}</p>
         <div className="flex items-center gap-1">
           <Image
             imageUrl={category.imageURL || "#"}
