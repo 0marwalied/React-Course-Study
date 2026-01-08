@@ -34,9 +34,10 @@ const App = () => {
   //State
   const [isOpen, setIsOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
-  const [product, setProduct] = useState<IProduct>(defaultProductObj);
-  const [products, setProducts] = useState<IProduct[]>(productList);
   const [errors, setErrors] = useState(defaultErrosObj);
+  const [product, setProduct] = useState<IProduct>(defaultProductObj);
+  const [productIdx, setProductIdx] = useState<number>(0);
+  const [products, setProducts] = useState<IProduct[]>(productList);
   const [tempColors, setTempColors] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState(categories[0]);
   const [editedProduct, setEditedProduct] =
@@ -109,10 +110,13 @@ const App = () => {
     setErrors(errors);
     const hasErrorMsg = !Object.values(errors).every((value) => value === "");
     if (hasErrorMsg) return;
-    const tempProducts = products.map((prod) =>
-      prod.id === newProduct.id ? newProduct : prod
-    );
+    const tempProducts = [...products];
+    tempProducts[productIdx] = newProduct;
     setProducts(tempProducts);
+    setProduct(defaultProductObj);
+    setEditedProduct(defaultProductObj);
+    setTempColors([]);
+    setErrors(defaultErrosObj);
     closeEditModal();
   };
 
@@ -158,7 +162,7 @@ const App = () => {
     ));
   };
 
-  const renderProductList = products.map(function (product) {
+  const renderProductList = products.map(function (product, idx) {
     return (
       <ProductCard
         product={product}
@@ -166,6 +170,8 @@ const App = () => {
         setEditedProduct={setEditedProduct}
         openEditModal={openEditModal}
         setTempColors={setTempColors}
+        productIdx={idx}
+        setProductIdx={setProductIdx}
         removeItem={removeItem}
       />
     );

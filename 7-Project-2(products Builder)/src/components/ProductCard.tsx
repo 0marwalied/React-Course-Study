@@ -9,6 +9,8 @@ interface IProps {
   openEditModal: () => void;
   setTempColors: (colors: string[]) => void;
   removeItem: (product: IProduct) => void;
+  productIdx: number;
+  setProductIdx: (idx: number) => void;
 }
 
 const ProductCard = ({
@@ -17,6 +19,8 @@ const ProductCard = ({
   openEditModal,
   setTempColors,
   removeItem,
+  productIdx,
+  setProductIdx,
 }: IProps) => {
   const { imageURL, title, id, description, colors, price, category } = product;
   const renderdedColors = renderColors(colors),
@@ -25,6 +29,7 @@ const ProductCard = ({
   function onEdit(): void {
     setEditedProduct(product);
     setTempColors(product.colors);
+    setProductIdx(productIdx);
     openEditModal();
   }
 
