@@ -10,6 +10,7 @@ import ErrorMessage from "./components/ErrorMessage";
 import CircleColor from "./components/CircleColor";
 import { v4 as uuid } from "uuid";
 import Select from "./components/ui/Select";
+import toast, { Toaster } from "react-hot-toast";
 
 const App = () => {
   const defaultProductObj = {
@@ -52,12 +53,11 @@ const App = () => {
   };
 
   const removeItem = (product: IProduct) => {
-    console.log("here");
     const newProducts = products.filter((prod) => {
       return prod.id != product.id;
     });
-    console.log(newProducts);
     setProducts(newProducts);
+    toast("The product deleted sucessfuly");
   };
 
   const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -192,6 +192,9 @@ const App = () => {
         >
           ADD
         </Button>
+        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full">
+          {renderProductList}
+        </div>
         {/* Add New Element Modal */}
         <Modal isOpen={isOpen} title="ADD New Element" closeModal={closeModal}>
           <form className="space-y-3 mt-2" onSubmit={onSubmitHandler}>
@@ -270,10 +273,7 @@ const App = () => {
             </div>
           </form>
         </Modal>
-
-        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full">
-          {renderProductList}
-        </div>
+        <Toaster />
       </main>
     </>
   );

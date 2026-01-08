@@ -122,7 +122,6 @@ const ProductCard = ({
           </div>
         </div>
       </Modal>
-      
     </div>
   );
 };
