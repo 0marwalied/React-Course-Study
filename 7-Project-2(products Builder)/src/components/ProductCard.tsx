@@ -1,8 +1,7 @@
-import type { IProduct } from "../interfaces";
+import type { ICategory, IProduct } from "../interfaces";
 import { handleDesciption, renderColors } from "../util";
 import Image from "./Image";
 import Button from "./ui/Button";
-
 interface IProps {
   product: IProduct;
   setEditedProduct: (product: IProduct) => void;
@@ -11,6 +10,7 @@ interface IProps {
   removeItem: (product: IProduct) => void;
   productIdx: number;
   setProductIdx: (idx: number) => void;
+  setSelectedCategory: (category: ICategory) => void;
 }
 
 const ProductCard = ({
@@ -21,6 +21,7 @@ const ProductCard = ({
   removeItem,
   productIdx,
   setProductIdx,
+  setSelectedCategory,
 }: IProps) => {
   const { imageURL, title, id, description, colors, price, category } = product;
   const renderdedColors = renderColors(colors),
@@ -30,6 +31,7 @@ const ProductCard = ({
     setEditedProduct(product);
     setTempColors(product.colors);
     setProductIdx(productIdx);
+    setSelectedCategory({ ...product.category, id: "" } as ICategory);
     openEditModal();
   }
 

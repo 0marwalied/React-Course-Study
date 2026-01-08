@@ -11,15 +11,16 @@ import { ChevronUpDownIcon } from "@heroicons/react/16/solid";
 import { CheckIcon } from "@heroicons/react/20/solid";
 import { categories } from "../../data";
 import type { ICategory } from "../../interfaces";
+import { v4 as uuid } from "uuid";
 
 interface IProps {
-  selected: ICategory;
+  selected: { name: string; imageURL: string };
   setSelected: (category: ICategory) => void;
 }
 
 const Select = ({ selected, setSelected }: IProps) => {
   return (
-    <Listbox value={selected} onChange={setSelected}>
+    <Listbox value={{ ...selected, id: uuid() }} onChange={setSelected}>
       <Label className="block text-md font-medium text-gray-900">
         Categories
       </Label>

@@ -171,6 +171,7 @@ const App = () => {
         productIdx={idx}
         setProductIdx={setProductIdx}
         removeItem={removeItem}
+        setSelectedCategory={setSelectedCategory}
       />
     );
   });
@@ -197,7 +198,7 @@ const App = () => {
             {renderFormInputs(product)}
 
             <Select
-              selected={{ ...editedProduct.category, id: uuid() }}
+              selected={{ ...editedProduct.category }}
               setSelected={setSelectedCategory}
             />
 
