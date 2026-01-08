@@ -1,7 +1,9 @@
+import { useState } from "react";
 import type { ICategory, IProduct } from "../interfaces";
 import { handleDesciption, renderColors } from "../util";
 import Image from "./Image";
 import Button from "./ui/Button";
+import Modal from "./ui/Modal";
 interface IProps {
   product: IProduct;
   setEditedProduct: (product: IProduct) => void;
@@ -38,6 +40,8 @@ const ProductCard = ({
   setSelectedCategory,
 }: IProps) => {
   const { imageURL, title, id, description, colors, price, category } = product;
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
   const renderdedColors = renderColors(colors),
     handldedDesciption = handleDesciption(description);
 
@@ -47,6 +51,14 @@ const ProductCard = ({
     setProductIdx(productIdx);
     setSelectedCategory({ ...product.category, id: "" } as ICategory);
     openEditModal();
+  }
+
+  function closeModal(): void {
+    setIsOpen(false);
+  }
+
+  function validateTheRemove(): void {
+    setIsOpen(true);
   }
 
   return (
@@ -74,10 +86,43 @@ const ProductCard = ({
         <Button color="blue" onClick={onEdit}>
           EDIT
         </Button>
-        <Button color="red" onClick={() => removeItem(product)}>
+        <Button color="red" onClick={() => validateTheRemove()}>
           REMOVE
         </Button>
       </div>
+
+      <Modal isOpen={isOpen} closeModal={closeModal}>
+        <div className="flex flex-col space-y-2">
+          <h1 className="font-medium text-lg">
+            Are you sure you want to remove this Product from your Store?
+          </h1>
+          <p className="text-gray-400 leading-5.5">
+            Deleting this product will remove it permanently from your
+            inventory. Any associated data sales history, and other related
+            information will also be deleted. Please make sure this is the
+            inteded action
+          </p>
+          <div className="flex justify-between space-x-2">
+            <Button
+              color="red"
+              onClick={() => {
+                removeItem(product);
+                setIsOpen(false);
+              }}
+            >
+              Yes, remove
+            </Button>
+            <Button
+              color="#d1d2e0"
+              textColor="black"
+              onClick={() => setIsOpen(false)}
+            >
+              Cancel
+            </Button>
+          </div>
+        </div>
+      </Modal>
+      
     </div>
   );
 };

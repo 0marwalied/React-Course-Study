@@ -6,6 +6,7 @@ interface Iprops extends HtmlHTMLAttributes<HTMLButtonElement> {
   width?: "full" | "fit";
   className?: string;
   type?: "button" | "submit" | "reset";
+  textColor?: string;
 }
 
 const Button = ({
@@ -13,13 +14,14 @@ const Button = ({
   className,
   color,
   width = "full",
+  textColor,
   ...rest
 }: Iprops) => {
   return (
     <button
       {...rest}
-      style={{ backgroundColor: color }}
-      className={`${className} w-${width} p-2 rounded-md text-white text-xl cursor-pointer hover:opacity-80`}
+      style={{ backgroundColor: color, color: textColor }}
+      className={`${className} w-${width} p-2 rounded-md text-white text-xl font-medium cursor-pointer hover:opacity-80`}
     >
       {children}
     </button>
