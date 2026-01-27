@@ -7,6 +7,7 @@ let notes = [
   "useEffect hook can be used in functional components to mimic the behavior of lifecycle methods like componentDidMount, componentDidUpdate, and componentWillUnmount.",
   "<code>useEffect</code> cleanup function is called before the component is unmounted or before the effect runs again, making it useful for cleaning up subscriptions or timers.",
   "<code>AbortController</code> can be used to cancel fetch requests in componentWillUnmount or the cleanup function of useEffect to prevent memory leaks.",
+  "<code>Immediately Invoked Function Expression (IIFE)</code> can be used inside useEffect to handle async operations like fetching data.",
 ];
 
 let list = document.querySelector(`ul`);

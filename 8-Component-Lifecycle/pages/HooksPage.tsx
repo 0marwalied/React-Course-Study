@@ -11,18 +11,19 @@ const HooksPage = () => {
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
-    const fetchProducts = async () => {
+    // IIFE (Immediately Invoked Function Expression)
+    (async () => {
       try {
-        const response = await fetch("https://dummyjson.com/products", {
-          signal,
-        });
-        const jsonData = await response.json();
-        setProducts(jsonData.products);
+        const response = await (
+          await fetch("https://dummyjson.com/products", {
+            signal,
+          })
+        ).json();
+        setProducts(response.products);
       } catch (error) {
         console.log(error);
       }
-    };
-    fetchProducts();
+    })();
 
     return () => {
       controller.abort();
