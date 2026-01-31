@@ -1,6 +1,9 @@
-import { createRoutesFromElements, Outlet, Route } from "react-router";
+import { createRoutesFromElements, Route } from "react-router";
 import { createBrowserRouter } from "react-router";
-import Navbar from "../../UI/navbar";
+import HomePage from "../pages";
+import ContactPage from "../pages/contact";
+import AboutPage from "../pages/about";
+import RootLayout from "../pages/Layout";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -9,13 +12,13 @@ const router = createBrowserRouter(
         path="/"
         element={
           <>
-            <Navbar />
-            <Outlet />
+            <RootLayout />
           </>
         }
       >
-        <Route path="" element={<h3>Home Page</h3>} />
-        <Route path="contact" element={<h3>Contact Page</h3>} />
+        <Route index element={<HomePage />} />
+        <Route path="contact" element={<ContactPage />} />
+        <Route path="about" element={<AboutPage />} />
       </Route>
     </>,
   ),
