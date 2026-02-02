@@ -5,6 +5,12 @@
   text-align: center;
 }
 
+.active {
+  font-weight: bold;
+  text-decoration: underline;
+  color: blue;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;
