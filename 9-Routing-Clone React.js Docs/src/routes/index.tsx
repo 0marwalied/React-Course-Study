@@ -4,31 +4,26 @@ import HomePage from "../pages";
 import ContactPage from "../pages/Contact";
 import AboutPage from "../pages/About";
 import RootLayout from "../pages/Layout";
-import Layout from "../pages/Learn/Layout";
-import QuickStart from "../pages/Learn/QuickStart";
-import LearnPage from "../pages/Learn";
+import LearnLayout from "../pages/Learn/Layout";
+import QuickStartPage from "../pages/Learn/QuickStart";
+import ThinkingInReactPage from "../pages/Learn/ThinkingInReact";
+import InstallationPage from "../pages/Learn/Installation";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       {/* Home Layout */}
-      <Route
-        path="/"
-        element={
-          <>
-            <RootLayout />
-          </>
-        }
-      >
+      <Route path="/" element={<RootLayout />}>
         <Route index element={<HomePage />} />
         <Route path="contact" element={<ContactPage />} />
         <Route path="about" element={<AboutPage />} />
       </Route>
 
       {/* Learn Layout */}
-      <Route path="/learn" element={<Layout />}>
-        <Route index element={<LearnPage />} />
-        <Route path="QuickStart" element={<QuickStart />} />
+      <Route path="/learn" element={<LearnLayout />}>
+        <Route index element={<QuickStartPage />} />
+        <Route path="thinking-in-react" element={<ThinkingInReactPage />} />
+        <Route path="installation" element={<InstallationPage />} />
       </Route>
     </>,
   ),

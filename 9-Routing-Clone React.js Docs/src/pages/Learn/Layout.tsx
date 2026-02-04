@@ -1,12 +1,14 @@
 import { Outlet } from "react-router";
-import Navbar from "../../../UI/navbar";
+import Navbar from "../../components/Navbar";
+import LearnAside from "../../components/LearnAside";
 
-const Layout = () => {
+const LearnLayout = () => {
   return (
     <>
       <Navbar />
+      <LearnAside />
       <Outlet />
     </>
   );
 };
-export default Layout;
+export default LearnLayout;
