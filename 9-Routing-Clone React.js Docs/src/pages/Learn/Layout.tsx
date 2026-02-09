@@ -6,8 +6,10 @@ const LearnLayout = () => {
   return (
     <>
       <Navbar />
-      <LearnAside />
-      <Outlet />
+      <div className="flex space-x-4">
+        <LearnAside />
+        <Outlet />
+      </div>
     </>
   );
 };

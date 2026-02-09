@@ -2,7 +2,7 @@ import { NavLink } from "react-router";
 
 const Navbar = () => {
   return (
-    <nav className="max-w-sm mx-auto my-7">
+    <nav className="max-w-lg mx-auto my-7">
       <ul className="flex items-center justify-between">
         <li>
           <NavLink to="/" className="text-lg font-bold">
@@ -22,6 +22,16 @@ const Navbar = () => {
         <li>
           <NavLink to="/learn" className="text-lg font-bold">
             Learn
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/contribute" className="text-lg font-bold">
+            Contribute
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/login" className="text-lg font-bold">
+            Login
           </NavLink>
         </li>
       </ul>
