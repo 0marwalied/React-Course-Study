@@ -10,6 +10,12 @@ import ThinkingInReactPage from "../pages/Learn/ThinkingInReact";
 import InstallationPage from "../pages/Learn/Installation";
 import ContributePage from "../pages/Contribute";
 import LoginPage from "../pages/Login";
+import ProtectedRoute from "../components/auth/ProtectedRoute";
+
+const isLoggedIn = true;
+const userData: { email: string } | null = isLoggedIn
+  ? { email: "omarwaliedismail@gmail.com" }
+  : null;
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -19,8 +25,26 @@ const router = createBrowserRouter(
         <Route index element={<HomePage />} />
         <Route path="contact" element={<ContactPage />} />
         <Route path="about" element={<AboutPage />} />
-        <Route path="contribute" element={<ContributePage />} />
-        <Route path="login" element={<LoginPage />} />
+        <Route
+          path="contribute"
+          element={
+            <ProtectedRoute redirectPath="/login" isAllowed={isLoggedIn}>
+              <ContributePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="login"
+          element={
+            <ProtectedRoute
+              redirectPath="/contribute"
+              data={userData}
+              isAllowed={!isLoggedIn}
+            >
+              <LoginPage />
+            </ProtectedRoute>
+          }
+        />
       </Route>
 
       {/* Learn Layout */}

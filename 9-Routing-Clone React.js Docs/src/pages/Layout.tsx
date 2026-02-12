@@ -4,7 +4,9 @@ import Navbar from "../components/Navbar";
 const RootLayout = () => {
   return (
     <>
-      <Navbar />
+      <div className="w-full justify-center flex">
+        <Navbar />
+      </div>
       <Outlet />
     </>
   );

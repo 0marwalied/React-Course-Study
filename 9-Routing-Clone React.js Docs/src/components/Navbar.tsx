@@ -2,8 +2,8 @@ import { NavLink } from "react-router";
 
 const Navbar = () => {
   return (
-    <nav className="max-w-lg mx-auto my-7">
-      <ul className="flex items-center justify-between">
+    <nav className="max-w-lg my-7 ">
+      <ul className="flex items-center space-x-3 justify-between">
         <li>
           <NavLink to="/" className="text-lg font-bold">
             Home

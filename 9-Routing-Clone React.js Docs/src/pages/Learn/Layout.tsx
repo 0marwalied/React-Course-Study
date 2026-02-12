@@ -5,10 +5,12 @@ import LearnAside from "../../components/LearnAside";
 const LearnLayout = () => {
   return (
     <>
-      <Navbar />
-      <div className="flex space-x-4">
+      <div className="flex">
         <LearnAside />
-        <Outlet />
+        <div className="flex flex-col w-full items-center">
+          <Navbar />
+          <Outlet />
+        </div>
       </div>
     </>
   );
