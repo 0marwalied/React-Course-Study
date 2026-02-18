@@ -1,5 +1,3 @@
-import React from "react";
-
 const PageNotFound = () => {
   return (
     <div className="fixed inset-0 h-full w-full">
