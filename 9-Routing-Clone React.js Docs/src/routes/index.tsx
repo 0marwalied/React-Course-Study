@@ -11,6 +11,8 @@ import InstallationPage from "../pages/Learn/Installation";
 import ContributePage from "../pages/Contribute";
 import LoginPage from "../pages/Login";
 import ProtectedRoute from "../components/auth/ProtectedRoute";
+import ErrorHandler from "../components/errors/ErrorHandler";
+import PageNotFound from "../components/errors/PageNotFound";
 
 const isLoggedIn = true;
 const userData: { email: string } | null = isLoggedIn
@@ -32,6 +34,7 @@ const router = createBrowserRouter(
               <ContributePage />
             </ProtectedRoute>
           }
+          errorElement={<ErrorHandler />}
         />
         <Route
           path="login"
@@ -44,6 +47,7 @@ const router = createBrowserRouter(
               <LoginPage />
             </ProtectedRoute>
           }
+          errorElement={<ErrorHandler />}
         />
       </Route>
 
@@ -53,6 +57,13 @@ const router = createBrowserRouter(
         <Route path="thinking-in-react" element={<ThinkingInReactPage />} />
         <Route path="installation" element={<InstallationPage />} />
       </Route>
+
+      {/* 404 Not Found */}
+      <Route
+        path="*"
+        element={<PageNotFound />}
+        errorElement={<ErrorHandler />}
+      />
     </>,
   ),
 );
