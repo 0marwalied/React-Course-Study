@@ -12,6 +12,8 @@
 
 - npm install tailwindcss @tailwindcss/vite
 - start vite.config.js
+  - import tailwindcss from '@tailwindcss/vite'
+  - add tailwindcss() in the plugins array
 - @import "tailwindcss"; --> in the index.css file
 
 ---
