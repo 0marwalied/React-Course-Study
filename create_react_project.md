@@ -6,7 +6,7 @@
 
 - npm create vite@latest YourProjectName
 
---
+---
 
 ## Go to tailwindcss website
 
