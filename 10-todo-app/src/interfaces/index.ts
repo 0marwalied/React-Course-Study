@@ -3,7 +3,7 @@ export interface IRegisterForm {
   placeholder: string;
   type: string;
   validation: {
-    required?: boolean;
+    required?: boolean | string;
     minLength?: number;
     pattern?: RegExp;
   };
@@ -14,7 +14,7 @@ export interface ILoginForm {
   placeholder: string;
   type: string;
   validation: {
-    required?: boolean;
+    required?: boolean | string;
     minLength?: number;
     pattern?: RegExp;
   };
