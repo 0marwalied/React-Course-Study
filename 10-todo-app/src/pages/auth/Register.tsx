@@ -7,6 +7,13 @@ import ErrorMessage from "../../components/errors/ErrorMessage";
 import { REGISTER_FORM } from "../../data";
 import { registerSchema } from "../../validation";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { Toaster } from "react-hot-toast";
+import axiosInstance from "../../config/axios.config";
+import React from "react";
+import { errorNotify, successNotify } from "../../components/notification";
+import { AxiosError } from "axios";
+import type { IErrorMessage } from "../../interfaces";
+import { useNavigate } from "react-router";
 
 type IFormInput = {
   username: string;
@@ -15,34 +22,42 @@ type IFormInput = {
 };
 
 const RegisterPage = () => {
+  // Handlers
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<IFormInput>({ resolver: yupResolver(registerSchema) });
-
-  const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    console.log(data);
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = React.useState(false);
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    setIsLoading(true);
+    try {
+      const { status } = await axiosInstance.post("/auth/local/register", data);
+      if (status === 200) {
+        successNotify();
+        setTimeout(() => {
+          navigate("/login");
+        }, 2000);
+      }
+    } catch (e) {
+      const err = e as AxiosError<IErrorMessage>;
+      errorNotify(`${err.response?.data.error.message}`);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Renders
   const renderRegisterForm = REGISTER_FORM.map(
-    ({ name, placeholder, type, validation }) => (
-      <div>
+    ({ name, placeholder, type, validation }, idx) => (
+      <div key={idx}>
         <Input
           type={type}
           placeholder={placeholder}
           {...register(name, validation)}
         />
-        {errors[name]?.type === "required" && (
-          <ErrorMessage error={errors[name].message} />
-        )}
-        {errors[name]?.type === "matches" && (
-          <ErrorMessage error={errors[name].message} />
-        )}
-        {errors[name]?.type === "min" && (
-          <ErrorMessage error={errors[name].message} />
-        )}
+        {errors[name] && <ErrorMessage error={errors[name].message} />}
       </div>
     ),
   );
@@ -58,9 +73,15 @@ const RegisterPage = () => {
 
       {renderRegisterForm}
 
-      <Button status="send" type="submit" className="font-semibold w-full">
-        Register
+      <Button
+        status="send"
+        type="submit"
+        className="font-semibold w-full text-center flex items-center justify-center"
+        isLoading={isLoading}
+      >
+        {isLoading ? "Loading..." : "Register"}
       </Button>
+      <Toaster />
     </Form>
   );
 };

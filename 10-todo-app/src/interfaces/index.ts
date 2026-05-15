@@ -19,3 +19,9 @@ export interface ILoginForm {
     pattern?: RegExp;
   };
 }
+
+export interface IErrorMessage {
+  error: {
+    message?: string;
+  };
+}

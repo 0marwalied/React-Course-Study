@@ -33,15 +33,7 @@ const LoginPage = () => {
           type={type}
           {...register(name, validation)}
         />
-        {errors?.[name]?.type === "required" && (
-          <ErrorMessage error={errors[name].message} />
-        )}
-        {errors?.[name]?.type === "min" && (
-          <ErrorMessage error={errors[name].message} />
-        )}
-        {errors?.[name]?.type === "matches" && (
-          <ErrorMessage error={errors[name].message} />
-        )}
+        {errors?.[name] && <ErrorMessage error={errors[name].message} />}
       </div>
     ),
   );
