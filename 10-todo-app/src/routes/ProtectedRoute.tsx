@@ -4,10 +4,20 @@ interface ProtectedRouteProps {
   children?: React.ReactNode;
   isAuth?: boolean;
   path?: string;
+  data?: unknown;
 }
 
-const ProtectedRoute = ({ children, isAuth, path }: ProtectedRouteProps) => {
-  return isAuth ? children : <Navigate to={`/${path}`} />;
+const ProtectedRoute = ({
+  children,
+  isAuth,
+  path,
+  data,
+}: ProtectedRouteProps) => {
+  return isAuth ? (
+    children
+  ) : (
+    <Navigate replace state={{ data }} to={`/${path}`} />
+  );
 };
 
 export default ProtectedRoute;

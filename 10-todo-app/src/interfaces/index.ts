@@ -10,7 +10,7 @@ export interface IRegisterForm {
 }
 
 export interface ILoginForm {
-  name: "email" | "password";
+  name: "identifier" | "password";
   placeholder: string;
   type: string;
   validation: {

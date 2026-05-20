@@ -32,7 +32,7 @@ export const REGISTER_FORM: IRegisterForm[] = [
 
 export const LOGIN_FORM: ILoginForm[] = [
   {
-    name: "email",
+    name: "identifier",
     placeholder: "Email",
     type: "text",
     validation: {

@@ -30,19 +30,25 @@ const RegisterPage = () => {
   } = useForm<IFormInput>({ resolver: yupResolver(registerSchema) });
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = React.useState(false);
+
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     setIsLoading(true);
     try {
       const { status } = await axiosInstance.post("/auth/local/register", data);
       if (status === 200) {
-        successNotify();
+        successNotify("Registration successful! Redirecting to Login...");
         setTimeout(() => {
           navigate("/login");
         }, 2000);
       }
     } catch (e) {
       const err = e as AxiosError<IErrorMessage>;
-      errorNotify(`${err.response?.data.error.message}`);
+      errorNotify(
+        `${err.response?.data.error.message || "Something went wrong!"}`,
+      );
+      setTimeout(() => {
+        location.reload();
+      }, 1000);
     } finally {
       setIsLoading(false);
     }
@@ -81,6 +87,18 @@ const RegisterPage = () => {
       >
         {isLoading ? "Loading..." : "Register"}
       </Button>
+
+      <span className="text-sm text-gray-500 text-center">
+        Have an account?{" "}
+        <button
+          type="button"
+          className="text-blue-500 hover:underline"
+          onClick={() => navigate("/login")}
+        >
+          Login
+        </button>
+      </span>
+
       <Toaster />
     </Form>
   );

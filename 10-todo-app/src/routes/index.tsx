@@ -6,7 +6,10 @@ import LoginPage from "../pages/auth/Login";
 import RegisterPage from "../pages/auth/Register";
 import ProtectedRoute from "./ProtectedRoute";
 
-const isLogedIn = false;
+const storageKey = "loggedInUser";
+const userDataString = localStorage.getItem(storageKey);
+const userData = userDataString ? JSON.parse(userDataString) : null;
+const isLogedIn = userData !== null;
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -16,7 +19,7 @@ const router = createBrowserRouter(
         <Route
           index
           element={
-            <ProtectedRoute isAuth={isLogedIn} path="login">
+            <ProtectedRoute isAuth={isLogedIn} path="login" data={userData}>
               <HomePage />
             </ProtectedRoute>
           }
@@ -24,7 +27,7 @@ const router = createBrowserRouter(
         <Route
           path="register"
           element={
-            <ProtectedRoute isAuth={!isLogedIn} path="">
+            <ProtectedRoute isAuth={!isLogedIn} path="" data={userData}>
               {" "}
               <RegisterPage />{" "}
             </ProtectedRoute>
@@ -33,7 +36,7 @@ const router = createBrowserRouter(
         <Route
           path="login"
           element={
-            <ProtectedRoute isAuth={!isLogedIn} path="">
+            <ProtectedRoute isAuth={!isLogedIn} path="" data={userData}>
               <LoginPage />
             </ProtectedRoute>
           }

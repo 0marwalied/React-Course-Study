@@ -7,9 +7,15 @@ import ErrorMessage from "../../components/errors/ErrorMessage";
 import { LOGIN_FORM } from "../../data";
 import { loginSchema } from "../../validation";
 import { yupResolver } from "@hookform/resolvers/yup/src/index.js";
+import axiosInstance from "../../config/axios.config";
+import { errorNotify, successNotify } from "../../components/notification";
+import { useNavigate } from "react-router-dom";
+import type { AxiosError } from "axios";
+import type { IErrorMessage } from "../../interfaces";
+import { Toaster } from "react-hot-toast";
 
 interface IFormInput {
-  email: string;
+  identifier: string;
   password: string;
 }
 
@@ -20,7 +26,35 @@ const LoginPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<IFormInput>({ resolver: yupResolver(loginSchema) });
-  const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data);
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = React.useState(false);
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    setIsLoading(true);
+    try {
+      const { status, data: dataRes } = await axiosInstance.post(
+        "/auth/local",
+        data,
+      );
+      console.log(dataRes);
+      if (status === 200) {
+        successNotify("Login successful! Redirecting...");
+        localStorage.setItem("loggedInUser", JSON.stringify(dataRes));
+        setTimeout(() => {
+          location.replace("/");
+        }, 2000);
+      }
+    } catch (e) {
+      const err = e as AxiosError<IErrorMessage>;
+      errorNotify(
+        `${err.response?.data.error.message || "Something went wrong!"}`,
+      );
+      setTimeout(() => {
+        location.reload();
+      }, 1000);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   console.log(errors);
 
@@ -49,9 +83,25 @@ const LoginPage = () => {
 
       {renderLoginForm}
 
-      <Button status="send" className="font-semibold w-full">
-        Login
+      <Button
+        status="send"
+        className="font-semibold w-full"
+        isLoading={isLoading}
+      >
+        {isLoading ? "Loading..." : "Login"}
       </Button>
+
+      <span className="text-sm text-gray-500 text-center">
+        No account?{" "}
+        <button
+          type="button"
+          className="text-blue-500 hover:underline"
+          onClick={() => navigate("/register")}
+        >
+          Register
+        </button>
+      </span>
+      <Toaster />
     </Form>
   );
 };
