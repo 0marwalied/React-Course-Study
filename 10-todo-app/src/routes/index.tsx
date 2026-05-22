@@ -24,6 +24,7 @@ const router = createBrowserRouter(
             </ProtectedRoute>
           }
         />
+        <Route path="profile" element={<h2>Profile page</h2>} />
         <Route
           path="register"
           element={

@@ -640,7 +640,7 @@ export interface ApiTodoTodo extends Struct.CollectionTypeSchema {
     singularName: 'todo';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     createdAt: Schema.Attribute.DateTime;
