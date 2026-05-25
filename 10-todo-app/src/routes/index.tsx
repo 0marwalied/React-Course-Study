@@ -5,6 +5,7 @@ import HomePage from "../pages";
 import LoginPage from "../pages/auth/Login";
 import RegisterPage from "../pages/auth/Register";
 import ProtectedRoute from "./ProtectedRoute";
+import ErrorPage from "../pages/error";
 
 const storageKey = "loggedInUser";
 const userDataString = localStorage.getItem(storageKey);
@@ -15,7 +16,7 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       {/* Home Route */}
-      <Route path="/" element={<RootLayout />}>
+      <Route path="/" element={<RootLayout />} errorElement={<ErrorPage />}>
         <Route
           index
           element={

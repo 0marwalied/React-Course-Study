@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 
 const HomePage = () => {
   const userData = getLoggedInUser();
-  const { isLoading, error, data } = useQuery({
+  const { isLoading, data } = useQuery({
     queryKey: ["todos"],
     queryFn: async () =>
       await axiosInstance
@@ -18,8 +18,6 @@ const HomePage = () => {
   });
 
   if (isLoading) return <p className="font-semibold text-xl">Loading...</p>;
-
-  if (error) return "An error has occurred: " + error.message;
 
   return (
     <div className="flex flex-col space-y-4 items-center justify-center p-4">
