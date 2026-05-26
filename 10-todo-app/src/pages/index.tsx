@@ -1,9 +1,9 @@
 import TodoRow from "../components/Todo";
 import useAuthenticatedQuery from "../hooks/useAuthenticatedQuery";
-import { getLoggedInUser } from "../utils/auth";
+import { getLoggedInUserData } from "../utils/auth";
 
 const HomePage = () => {
-  const userData = getLoggedInUser();
+  const userData = getLoggedInUserData();
   const { isLoading, data } = useAuthenticatedQuery({
     url: "users/me?populate=todos",
     queryKey: ["todos"],
@@ -19,9 +19,19 @@ const HomePage = () => {
   return (
     <div className="flex flex-col space-y-4 items-center justify-center p-4">
       {data?.todos && data.todos.length ? (
-        data.todos.map((todo: { id: number; Title: string }, idx: number) => (
-          <TodoRow key={todo.id} id={idx + 1} title={todo.Title} />
-        ))
+        data.todos.map(
+          (
+            todo: { id: number; title: string; description?: string },
+            idx: number,
+          ) => (
+            <TodoRow
+              key={todo.id}
+              id={idx + 1}
+              title={todo.title}
+              description={todo.description}
+            />
+          ),
+        )
       ) : (
         <p className="font-semibold">No todos found</p>
       )}

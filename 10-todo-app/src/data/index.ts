@@ -1,4 +1,4 @@
-import type { ILoginForm, IRegisterForm } from "../interfaces";
+import type { ILoginForm, IRegisterForm, ITodoForm } from "../interfaces";
 
 export const REGISTER_FORM: IRegisterForm[] = [
   {
@@ -47,6 +47,25 @@ export const LOGIN_FORM: ILoginForm[] = [
     validation: {
       required: true,
       minLength: 6,
+    },
+  },
+];
+
+export const TODO_FORM: ITodoForm[] = [
+  {
+    name: "title",
+    placeholder: "Title",
+    type: "text",
+    validation: {
+      required: true,
+    },
+  },
+  {
+    name: "description",
+    placeholder: "Description",
+    type: "text",
+    validation: {
+      required: false,
     },
   },
 ];

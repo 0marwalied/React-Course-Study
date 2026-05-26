@@ -25,3 +25,18 @@ export interface IErrorMessage {
     message?: string;
   };
 }
+
+export interface ITodoForm {
+  name: "title" | "description";
+  placeholder: string;
+  type: string;
+  validation: {
+    required?: boolean | string;
+  };
+}
+
+export interface ITodo {
+  id: number;
+  title: string;
+  description?: string;
+}

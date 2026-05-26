@@ -56,8 +56,6 @@ const LoginPage = () => {
     }
   };
 
-  console.log(errors);
-
   // Renders
   const renderLoginForm = LOGIN_FORM.map(
     ({ name, placeholder, type, validation }, idx) => (
