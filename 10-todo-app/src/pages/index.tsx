@@ -1,20 +1,17 @@
 import TodoRow from "../components/Todo";
-import axiosInstance from "../config/axios.config";
+import useAuthenticatedQuery from "../hooks/useAuthenticatedQuery";
 import { getLoggedInUser } from "../utils/auth";
-import { useQuery } from "@tanstack/react-query";
 
 const HomePage = () => {
   const userData = getLoggedInUser();
-  const { isLoading, data } = useQuery({
+  const { isLoading, data } = useAuthenticatedQuery({
+    url: "users/me?populate=todos",
     queryKey: ["todos"],
-    queryFn: async () =>
-      await axiosInstance
-        .get("users/me?populate=todos", {
-          headers: {
-            Authorization: `Bearer ${userData.jwt}`,
-          },
-        })
-        .then((response) => response.data),
+    config: {
+      headers: {
+        Authorization: `Bearer ${userData.jwt}`,
+      },
+    },
   });
 
   if (isLoading) return <p className="font-semibold text-xl">Loading...</p>;
