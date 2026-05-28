@@ -9,7 +9,7 @@ const HomePage = () => {
     queryKey: ["todos"],
     config: {
       headers: {
-        Authorization: `Bearer ${userData.jwt}`,
+        Authorization: `Bearer ${userData!.jwt}`,
       },
     },
   });
@@ -21,12 +21,18 @@ const HomePage = () => {
       {data?.todos && data.todos.length ? (
         data.todos.map(
           (
-            todo: { id: number; title: string; description?: string },
+            todo: {
+              id: number;
+              documentId: string;
+              title: string;
+              description?: string;
+            },
             idx: number,
           ) => (
             <TodoRow
               key={todo.id}
               id={idx + 1}
+              documentId={todo.documentId}
               title={todo.title}
               description={todo.description}
             />

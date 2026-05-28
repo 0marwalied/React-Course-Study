@@ -39,6 +39,6 @@ export const loginSchema = yup
 export const todoSchema = yup
   .object({
     title: yup.string().required("Title is required"),
-    description: yup.string(),
+    description: yup.string().optional(),
   })
   .required();

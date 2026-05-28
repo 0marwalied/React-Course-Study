@@ -6,10 +6,9 @@ import LoginPage from "../pages/auth/Login";
 import RegisterPage from "../pages/auth/Register";
 import ProtectedRoute from "./ProtectedRoute";
 import ErrorPage from "../pages/error";
+import { getLoggedInUserData } from "../utils/auth";
 
-const storageKey = "loggedInUser";
-const userDataString = localStorage.getItem(storageKey);
-const userData = userDataString ? JSON.parse(userDataString) : null;
+const userData = getLoggedInUserData();
 const isLogedIn = userData !== null;
 
 const router = createBrowserRouter(
