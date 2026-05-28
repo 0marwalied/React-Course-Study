@@ -2,7 +2,6 @@ type ButtonStatus = "send" | "danger" | "warning" | "normal" | "none";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   status: ButtonStatus;
-  text?: string;
   children?: React.ReactNode;
   className?: string;
   isLoading?: boolean;
@@ -22,13 +21,14 @@ const Button = ({
     normal: "bg-gray-500 hover:bg-gray-600 disabled:bg-gray-400",
     none: "",
   };
-  
+
   return (
     <button
       disabled={isLoading}
       className={`
         ${colorStatus[status]}
-        p-2 
+        py-1
+        px-2
         rounded-lg 
         text-white 
         flex 
@@ -53,7 +53,7 @@ const Button = ({
             cy="12"
             r="10"
             stroke="currentColor"
-            stroke-width="4"
+            strokeWidth="4"
             data--h-bstatus="0OBSERVED"
           ></circle>
           <path

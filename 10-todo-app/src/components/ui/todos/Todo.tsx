@@ -1,22 +1,30 @@
 import { useState } from "react";
-import Button from "./ui/Button";
-import Modal from "./ui/Modal";
-import Input from "./ui/Input";
-import Textarea from "./ui/Textarea";
-import type { ITodo } from "../interfaces";
+import Button from "../Button";
+import Modal from "../Modal";
+import Input from "../Input";
+import Textarea from "../Textarea";
+import type { ITodo } from "../../../interfaces";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import Form from "./ui/Form";
-import axiosInstance from "../config/axios.config";
-import { getLoggedInUserData } from "../utils/auth";
+import Form from "../Form";
+import axiosInstance from "../../../config/axios.config";
+import { getLoggedInUserData } from "../../../utils/auth";
 
 interface IFormInputs {
   title: string;
   description?: string | undefined;
 }
 
-const TodoRow = ({ id, documentId, title, description }: ITodo) => {
+const TodoRow = ({
+  id,
+  documentId,
+  title,
+  description,
+  editTodo,
+}: ITodo & { editTodo: (todo: ITodo) => void }) => {
   const userData = getLoggedInUserData();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   const {
     register,
@@ -32,8 +40,9 @@ const TodoRow = ({ id, documentId, title, description }: ITodo) => {
 
   const onSubmit: SubmitHandler<IFormInputs> = async (Data) => {
     const { title, description } = Data;
+    setIsUpdating(true);
     try {
-      await axiosInstance.put(
+      const { status } = await axiosInstance.put(
         `/todos/${documentId}`,
         {
           data: {
@@ -47,11 +56,45 @@ const TodoRow = ({ id, documentId, title, description }: ITodo) => {
           },
         },
       );
-      location.reload();
+      if (status === 200) {
+        editTodo({
+          id,
+          documentId,
+          title,
+          description,
+        });
+      }
+      // location.reload();
     } catch (error) {
       console.log("Error updating todo:", error);
     } finally {
+      setIsUpdating(false);
       setIsEditModalOpen(false);
+    }
+  };
+
+  const onRemove = async () => {
+    try {
+      const { statusText } = await axiosInstance.delete(
+        `/todos/${documentId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${userData!.jwt}`,
+          },
+        },
+      );
+      if (statusText === "OK") {
+        editTodo({
+          id,
+          documentId,
+          title: "",
+          description: "",
+        });
+      }
+    } catch (error) {
+      console.log("Error deleting todo:", error);
+    } finally {
+      setIsDeleteModalOpen(false);
     }
   };
 
@@ -76,7 +119,11 @@ const TodoRow = ({ id, documentId, title, description }: ITodo) => {
         >
           Edit
         </Button>
-        <Button status="danger" className="font-semibold">
+        <Button
+          status="danger"
+          className="font-semibold"
+          onClick={() => setIsDeleteModalOpen(true)}
+        >
           Remove
         </Button>
       </div>
@@ -115,6 +162,7 @@ const TodoRow = ({ id, documentId, title, description }: ITodo) => {
               status="send"
               type="submit"
               className="font-semibold w-full"
+              isLoading={isUpdating}
             >
               Save Changes
             </Button>
@@ -134,6 +182,26 @@ const TodoRow = ({ id, documentId, title, description }: ITodo) => {
             </Button>
           </div>
         </Form>
+      </Modal>
+
+      <Modal
+        isOpen={isDeleteModalOpen}
+        closeModal={() => setIsDeleteModalOpen(false)}
+        title="Are you sure you want to remove this todo from your store?"
+        description="Deleting this todo will remove it permanently from your inventory. Any associated data, sales history, and other related information will also be deleted. Please make sure this is the intended action."
+      >
+        <div className="flex space-x-2 mt-4">
+          <Button status="danger" className="font-semibold" onClick={onRemove}>
+            Yes, remove
+          </Button>
+          <Button
+            status="normal"
+            className="font-semibold"
+            onClick={() => setIsDeleteModalOpen(false)}
+          >
+            Cancel
+          </Button>
+        </div>
       </Modal>
     </div>
   );
