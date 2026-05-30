@@ -51,7 +51,7 @@ const TodosPage = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center w-2xl">
         <Button status="send" className="w-fit" onClick={() => generateTodos()}>
           Generate todos
         </Button>
