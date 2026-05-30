@@ -1,73 +1,194 @@
-# React + TypeScript + Vite
+# Todo App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern Todo frontend built with React, TypeScript, and Vite, connected to a Strapi backend API for authentication and todo management.
 
-Currently, two official plugins are available:
+## Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+This project provides a complete client-side experience for a todo platform:
 
-## React Compiler
+- User registration and login using Strapi auth
+- Protected routes for authenticated users
+- Todo listing with pagination and sorting
+- Profile page for signed-in users
+- Reusable UI components and form validation
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Features
 
-## Expanding the ESLint configuration
+- Authentication
+- Register (`/register`)
+- Login (`/login`)
+- Persisted session using `localStorage`
+- Route protection and auth-aware redirects
+- Todo Management
+- Fetch todos from Strapi
+- Server-side pagination
+- Sort by oldest/newest
+- Generate sample todos (faker-powered)
+- User Experience
+- Responsive layout
+- Reusable UI components (`Button`, `Input`, `Form`, `Select`, `Paginator`, etc.)
+- Toast notifications for success/error states
+- Error page fallback for invalid routes/runtime errors
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Tech Stack
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Frontend
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- React 19
+- TypeScript
+- Vite
+- React Router
+- TanStack Query
+- Axios
+- React Hook Form + Yup
+- Tailwind CSS 4
+- React Hot Toast
+- Lucide React
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Backend (expected)
+
+- Strapi (JWT authentication)
+- SQLite or PostgreSQL (based on backend setup)
+
+## API Integration
+
+Configured base URL in [src/config/axios.config.ts](src/config/axios.config.ts):
+
+```ts
+baseURL: "http://localhost:1337/api";
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Authentication endpoints used:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- `POST /api/auth/local/register`
+- `POST /api/auth/local`
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Todos endpoint used:
+
+- `GET /api/todos`
+- `POST /api/todos` (used for sample todo generation in this client)
+
+## Project Structure
+
+```text
+10-todo-app/
+├── public/
+├── src/
+│   ├── assets/
+│   ├── components/
+│   │   ├── errors/
+│   │   ├── notification/
+│   │   └── ui/
+│   ├── config/
+│   ├── data/
+│   ├── hooks/
+│   ├── interfaces/
+│   ├── pages/
+│   │   ├── auth/
+│   │   ├── error/
+│   │   └── layouts/
+│   ├── routes/
+│   ├── utils/
+│   └── validation/
+├── index.html
+├── package.json
+└── vite.config.ts
 ```
+
+## Getting Started
+
+### 1. Clone the repository
+
+```bash
+git clone <your-repo-url>
+cd 10-todo-app
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Start development server
+
+```bash
+npm run dev
+```
+
+Frontend runs at:
+
+- `http://localhost:5173`
+
+### 4. Build for production
+
+```bash
+npm run build
+```
+
+### 5. Preview production build
+
+```bash
+npm run preview
+```
+
+## Backend Requirements
+
+This frontend expects a running Strapi backend at:
+
+- `http://localhost:1337`
+
+Make sure your Strapi app has:
+
+- Authentication enabled (`/auth/local`, `/auth/local/register`)
+- A `todo` content type with appropriate permissions for authenticated users
+
+## Available Scripts
+
+- `npm run dev` - Start Vite dev server
+- `npm run build` - Type-check and create production build
+- `npm run preview` - Preview production build locally
+- `npm run lint` - Run ESLint
+
+## Screenshots
+
+> Below are the screenshots currently included in this repository.
+
+### Authentication Pages
+
+![Login / Register 1](src/assets/Screenshot%202026-05-30%20152448.png)
+![Login / Register 2](src/assets/Screenshot%202026-05-30%20152514.png)
+
+### Todo Pages and Features
+
+![Todos 1](src/assets/Screenshot%202026-05-30%20152538.png)
+![Todos 2](src/assets/Screenshot%202026-05-30%20152545.png)
+![Todos 3](src/assets/Screenshot%202026-05-30%20152552.png)
+![Todos 4](src/assets/Screenshot%202026-05-30%20152600.png)
+![Todos 5](src/assets/Screenshot%202026-05-30%20152613.png)
+![Todos 6](src/assets/Screenshot%202026-05-30%20152619.png)
+
+### Profile / Additional Views
+
+![View 1](src/assets/Screenshot%202026-05-30%20152634.png)
+![View 2](src/assets/Screenshot%202026-05-30%20152642.png)
+
+## Usage Flow
+
+1. Register a new account.
+2. Login with your credentials.
+3. Access protected pages.
+4. View and manage todos with sorting and pagination.
+5. Use generated sample todos for quick testing.
+
+## Future Improvements
+
+- Add create/update/delete controls directly in the todo UI
+- Add search and filtering
+- Add category/tags support
+- Add due dates and reminders
+- Add end-to-end tests
+
+## License
+
+This project is licensed under the MIT License.
