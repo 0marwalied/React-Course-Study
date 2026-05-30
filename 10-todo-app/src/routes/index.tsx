@@ -7,6 +7,8 @@ import RegisterPage from "../pages/auth/Register";
 import ProtectedRoute from "./ProtectedRoute";
 import ErrorPage from "../pages/error";
 import { getLoggedInUserData } from "../utils/auth";
+import TodosPage from "../pages/Todos";
+import ProfilePage from "../pages/Profile";
 
 const userData = getLoggedInUserData();
 const isLogedIn = userData !== null;
@@ -24,7 +26,8 @@ const router = createBrowserRouter(
             </ProtectedRoute>
           }
         />
-        <Route path="profile" element={<h2>Profile page</h2>} />
+        <Route path="profile" element={<ProfilePage />} />
+        <Route path="todos" element={<TodosPage />} />
         <Route
           path="register"
           element={

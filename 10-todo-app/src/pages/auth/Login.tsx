@@ -35,7 +35,7 @@ const LoginPage = () => {
         "/auth/local",
         data,
       );
-      console.log(dataRes);
+      
       if (status === 200) {
         successNotify("Login successful! Redirecting...");
         localStorage.setItem("loggedInUser", JSON.stringify(dataRes));

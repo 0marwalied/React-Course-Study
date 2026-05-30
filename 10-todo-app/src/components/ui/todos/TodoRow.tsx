@@ -8,6 +8,7 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import Form from "../Form";
 import axiosInstance from "../../../config/axios.config";
 import { getLoggedInUserData } from "../../../utils/auth";
+import { successNotify } from "../../notification";
 
 interface IFormInputs {
   title: string;
@@ -19,8 +20,10 @@ const TodoRow = ({
   documentId,
   title,
   description,
-  editTodo,
-}: ITodo & { editTodo: (todo: ITodo) => void }) => {
+  setQueryVersion,
+}: ITodo & {
+  setQueryVersion: React.Dispatch<React.SetStateAction<number>>;
+}) => {
   const userData = getLoggedInUserData();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -56,15 +59,9 @@ const TodoRow = ({
           },
         },
       );
-      if (status === 200) {
-        editTodo({
-          id,
-          documentId,
-          title,
-          description,
-        });
+      if (status >= 200) {
+        setQueryVersion((prev) => prev + 1);
       }
-      // location.reload();
     } catch (error) {
       console.log("Error updating todo:", error);
     } finally {
@@ -75,21 +72,14 @@ const TodoRow = ({
 
   const onRemove = async () => {
     try {
-      const { statusText } = await axiosInstance.delete(
-        `/todos/${documentId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${userData!.jwt}`,
-          },
+      const { status } = await axiosInstance.delete(`/todos/${documentId}`, {
+        headers: {
+          Authorization: `Bearer ${userData!.jwt}`,
         },
-      );
-      if (statusText === "OK") {
-        editTodo({
-          id,
-          documentId,
-          title: "",
-          description: "",
-        });
+      });
+      if (status >= 200) {
+        successNotify("Todo deleted successfully");
+        setQueryVersion((prev) => prev + 1);
       }
     } catch (error) {
       console.log("Error deleting todo:", error);
@@ -119,11 +109,7 @@ const TodoRow = ({
         >
           Edit
         </Button>
-        <Button
-          status="danger"
-          className="font-semibold"
-          onClick={() => setIsDeleteModalOpen(true)}
-        >
+        <Button status="danger" onClick={() => setIsDeleteModalOpen(true)}>
           Remove
         </Button>
       </div>
@@ -161,14 +147,12 @@ const TodoRow = ({
             <Button
               status="send"
               type="submit"
-              className="font-semibold w-full"
               isLoading={isUpdating}
             >
               Save Changes
             </Button>
             <Button
               status="normal"
-              className="font-semibold w-full "
               type="button"
               onClick={() => {
                 reset({

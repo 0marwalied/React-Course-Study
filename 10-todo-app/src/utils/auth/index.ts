@@ -1,6 +1,13 @@
 export const getLoggedInUserData = (): {
   jwt: string;
-  user: unknown;
+  user: {
+    id: string;
+    username: string;
+    email: string;
+    createdAt: string;
+    updatedAt: string;
+    documentId: string;
+  };
 } | null => {
   const storageKey = "loggedInUser";
   const userDataString = localStorage.getItem(storageKey);

@@ -15,11 +15,12 @@ const Button = ({
   ...rest
 }: ButtonProps) => {
   const colorStatus: Record<ButtonStatus, string> = {
-    send: "bg-indigo-500 hover:bg-indigo-600 disabled:bg-indigo-400",
-    danger: "bg-red-500 hover:bg-red-600 disabled:bg-red-400",
-    warning: "bg-yellow-500 hover:bg-yellow-600 disabled:bg-yellow-400 ",
-    normal: "bg-gray-500 hover:bg-gray-600 disabled:bg-gray-400",
-    none: "",
+    send: "bg-indigo-500 hover:bg-indigo-600 disabled:bg-indigo-400 text-white",
+    danger: "bg-red-500 hover:bg-red-600 disabled:bg-red-400 text-white",
+    warning:
+      "bg-yellow-500 hover:bg-yellow-600 disabled:bg-yellow-400 text-white",
+    normal: "bg-gray-500 hover:bg-gray-600 disabled:bg-gray-400 text-white",
+    none: "bg-transparent hover:bg-indigo-600 hover:text-white border-1 text-black",
   };
 
   return (
@@ -29,13 +30,13 @@ const Button = ({
         ${colorStatus[status]}
         py-1
         px-2
-        rounded-lg 
-        text-white 
+        rounded-lg  
         flex 
         items-center 
         justify-center 
-        ${className}
         disabled:cursor-not-allowed
+        font-semibold
+        ${className}
        `}
       {...rest}
     >
