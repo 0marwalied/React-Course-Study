@@ -40,6 +40,27 @@ export const fileTree: IFile = {
           isFolder: false,
           content: "index.ts content",
         },
+        {
+          name: "test",
+          isFolder: true,
+          children: [
+            {
+              name: "hello.html",
+              isFolder: false,
+              content: "index.ts content",
+            },
+            {
+              name: "hello.css",
+              isFolder: false,
+              content: "index.ts content",
+            },
+            {
+              name: "hello.js",
+              isFolder: false,
+              content: "index.ts content",
+            },
+          ],
+        },
       ],
     },
   ],
