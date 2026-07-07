@@ -3,14 +3,18 @@ import type { IFile } from "../interfaces";
 import RightArrowIcon from "./SVG/Right";
 import BottomArrowIcon from "./SVG/Bottom";
 import RenderIcon from "./RenderIcon";
+import { useDispatch } from "react-redux";
+import { setOpenFiles } from "../app/feature/fileTreeSlice";
 
 interface IProp {
   fileTree: IFile;
 }
 
-const RecursiveComponent = ({
-  fileTree: { children, isFolder, name },
-}: IProp) => {
+const RecursiveComponent = ({ fileTree }: IProp) => {
+  const { children, isFolder, name } = fileTree;
+
+  const dispatch = useDispatch();
+
   const [isOpen, setIsOpen] = React.useState(true);
   return (
     <>
@@ -26,7 +30,10 @@ const RecursiveComponent = ({
               <span>{name}</span>
             </div>
           ) : (
-            <div className="flex items-center space-x-1 ml-2">
+            <div
+              className="flex items-center space-x-1 ml-2"
+              onClick={() => dispatch(setOpenFiles(fileTree))}
+            >
               <RenderIcon fileName={name} />
               <span>{name}</span>
             </div>
