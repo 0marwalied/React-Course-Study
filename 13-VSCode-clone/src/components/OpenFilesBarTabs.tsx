@@ -5,7 +5,7 @@ import OpenFileTab from "./OpenFileTab";
 const OpenFilesBarTabs = () => {
   const openFiles = useSelector((state: RootState) => state.tree.openFiles);
   return (
-    <div className="flex space-x-3 ml-2">
+    <div className="flex border-b-2 h-min border-gray-500 w-fit">
       {openFiles.map((file) => (
         <OpenFileTab key={file.id} file={file} />
       ))}
