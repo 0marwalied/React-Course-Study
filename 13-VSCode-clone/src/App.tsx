@@ -5,22 +5,21 @@ import OpenFilesBarTabs from "./components/OpenFilesBarTabs";
 
 import RecursiveComponent from "./components/RecursiveComponent";
 import { fileTree } from "./data";
+import FileSyntaxhigHlighter from "./components/FileSyntaxhigHlighter";
 
 function App() {
   const fileContent = useSelector(
     (state: RootState) => state.tree.clickedFile.fileContent,
   );
   return (
-    <div className="flex">
-      <div className="w-64  border-r-2 border-gray-500 h-screen">
+    <div className="flex h-max">
+      <div className="w-64  border-r-2 border-gray-500 min-h-screen max-h-auto">
         <RecursiveComponent fileTree={fileTree} />
       </div>
 
       <div>
         <OpenFilesBarTabs />
-        <div>
-          <h2 className="text-lg font-bold">{fileContent}</h2>
-        </div>
+        <FileSyntaxhigHlighter content={fileContent} />
       </div>
     </div>
   );
