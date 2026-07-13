@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import type { RootState } from "../app/store";
 import OpenFileTab from "./OpenFileTab";
+import { memo } from "react";
 
 const OpenFilesBarTabs = () => {
   const openFiles = useSelector((state: RootState) => state.tree.openFiles);
@@ -13,4 +14,4 @@ const OpenFilesBarTabs = () => {
   );
 };
 
-export default OpenFilesBarTabs;
+export default memo(OpenFilesBarTabs);

@@ -30,11 +30,7 @@ function App() {
             </div>
           ) : (
             <div className="flex items-center justify-center h-full">
-              <img
-                src="../public/icons/vscode.svg"
-                alt="vscode"
-                className="w-64 h-64"
-              />
+              <img src="/icons/vscode.svg" alt="vscode" className="w-64 h-64" />
             </div>
           )
         }

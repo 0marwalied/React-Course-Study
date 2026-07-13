@@ -1,19 +1,19 @@
 export const extensionIconPaths: Record<string, string> = {
   // Files
-  tsx: "../../public/icons/react_ts",
-  js: "../../public/icons/javascript",
-  jsx: "../../public/icons/react",
-  html: "../../public/icons/html",
-  css: "../../public/icons/css",
-  scss: "../../public/icons/scss",
-  json: "../../public/icons/json",
-  png: "../../public/icons/png",
-  jpg: "../../public/icons/jpg",
-  jpeg: "../../public/icons/jpeg",
+  tsx: "/icons/react_ts",
+  js: "/icons/javascript",
+  jsx: "/icons/react",
+  html: "/icons/html",
+  css: "/icons/css",
+  scss: "/icons/scss",
+  json: "/icons/json",
+  png: "/icons/png",
+  jpg: "/icons/jpg",
+  jpeg: "/icons/jpeg",
 
   // Folders
-  node_modules: "../../public/icons/folder-node",
-  public: "../../public/icons/folder-public",
-  src: "../../public/icons/folder-src",
-  default: "../../public/icons/folder-default",
+  node_modules: "/icons/folder-node",
+  public: "/icons/folder-public",
+  src: "/icons/folder-src",
+  default: "/icons/folder-default",
 };
