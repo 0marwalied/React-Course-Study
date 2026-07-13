@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import type { IFile } from "../interfaces";
 import RightArrowIcon from "./SVG/Right";
 import BottomArrowIcon from "./SVG/Bottom";
@@ -52,4 +52,4 @@ const RecursiveComponent = ({ fileTree }: IProp) => {
   );
 };
 
-export default RecursiveComponent;
+export default memo(RecursiveComponent);
