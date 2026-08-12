@@ -2,14 +2,16 @@ import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
 import counterSlice from "./features/counter/counterSlice";
 import cartSlice from "./features/cart/cartSlice";
-import productsSlice from "./features/products/productsSlice";
+import { productsApiSlice } from "./features/products/productsSlice";
 
 const store = configureStore({
   reducer: {
     counter: counterSlice,
     cart: cartSlice,
-    products: productsSlice, // ** Added products slice to the store
+    [productsApiSlice.reducerPath]: productsApiSlice.reducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(productsApiSlice.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
