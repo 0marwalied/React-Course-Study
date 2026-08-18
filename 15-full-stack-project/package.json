@@ -1,0 +1,14 @@
+{
+  "name": "15-FULL-STACK-PROJECT",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev --workspace=frontend\" \"npm run dev --workspace=backend\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  }
+}
