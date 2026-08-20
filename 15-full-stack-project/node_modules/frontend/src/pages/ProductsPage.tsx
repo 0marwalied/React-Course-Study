@@ -1,4 +1,5 @@
 import ProductCard from "@/components/ProductCard";
+import type { Product } from "@/data";
 import { Grid } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -8,7 +9,7 @@ const ProductsPage = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:1337/api/products")
+      .get("http://localhost:1337/api/products?populate=category,thumbnail")
       .then((res) => setProductList(res.data.data))
       .catch((err) => console.log(err));
   }, []);
@@ -19,8 +20,8 @@ const ProductsPage = () => {
       templateColumns="repeat(auto-fill, minmax(300px, 1fr))"
       gap="6"
     >
-      {productList.map((product) => (
-        <ProductCard key={product.id} {...product} />
+      {productList.map((product: Product) => (
+        <ProductCard key={product!.id} {...product!} />
       ))}
     </Grid>
   );

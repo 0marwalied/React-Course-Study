@@ -1,34 +1,35 @@
 import { Button, Card, Image, Text } from "@chakra-ui/react";
 import { useColorMode } from "./ui/color-mode";
 import { Link } from "react-router";
+import type { Product } from "@/data";
 
-const ProductCard = ({ attributes }) => {
+const ProductCard = (product: Product) => {
   const { colorMode } = useColorMode();
-  console.log(colorMode);
+
+  const { title, price, thumbnail, description } = product;
 
   return (
     <Card.Root border={"1px solid #a8b5c8"} bg="none">
       <Image
-        src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
+        src={`http://localhost:1337${thumbnail?.url}`}
         alt="Green double couch with wooden legs"
         boxSize="200px"
         rounded="50%"
         mx="auto"
       />
       <Card.Body gap="2">
-        <Card.Title textAlign={"center"}>Living room Sofa</Card.Title>
+        <Card.Title textAlign={"center"}>{title}</Card.Title>
         <Card.Description fontSize="sm" textAlign="center">
-          This sofa is perfect for modern tropical spaces, baroque inspired
-          spaces.
+          {description}
         </Card.Description>
         <Text fontSize="3xl" color="purple.600" textAlign="center">
-          $450
+          ${price}
         </Text>
       </Card.Body>
       <Card.Footer>
         <Button
           as={Link}
-          to="/products/1"
+          to={`/products/${product.id}`}
           bg={`${colorMode === "light" ? "#e6f3fd" : "#9f7aea"}`}
           color={`${colorMode !== "light" ? "#e6f3fd" : "#9f7aea"}`}
           size="xl"
