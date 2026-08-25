@@ -18,7 +18,6 @@ The main folders are:
 - `8-Component-Lifecycle`
 - `9-Routing-Clone React.js Docs`
 - `10-todo-app`
-- `10-todo-app-backend`
 - `11-performance-and-optimization`
 - `12-Redux-Toolkit-for-State-Management`
 - `12-Redux-Toolkit-training`
@@ -411,7 +410,7 @@ This folder teaches how React apps become multi-page experiences without full pa
 
 ### Purpose
 
-This is a full frontend todo application connected to a Strapi backend. It combines authentication, protected routes, API requests, form validation, pagination, sorting, local storage, and reusable UI components.
+This is a full-stack todo workspace with a Vite React frontend and a Strapi backend in one folder. Running `npm run dev` from `10-todo-app` starts both apps, matching the structure used by `15-full-stack-project`.
 
 ### Main New Items
 
@@ -437,6 +436,13 @@ This is a full frontend todo application connected to a Strapi backend. It combi
 
 ### Implementation Highlights
 
+The project root uses npm workspaces:
+
+- `frontend`: Vite React todo app.
+- `backend`: Strapi API.
+
+The root `dev` script runs both workspace dev servers with `concurrently`.
+
 The app uses routes for:
 
 - `/`: protected home route.
@@ -460,32 +466,30 @@ It also includes a `generateTodos` function that creates 10 fake todo records th
 
 ### Folder Structure
 
-- `src/components/ui`: Reusable UI components.
-- `src/components/errors`: Error message components.
-- `src/components/notification`: Toast notification helpers.
-- `src/config/axios.config.ts`: Axios base URL setup.
-- `src/data`: Form definitions and shared data.
-- `src/hooks/useAuthenticatedQuery.ts`: TanStack Query wrapper for API requests.
-- `src/interfaces`: Shared TypeScript interfaces.
-- `src/pages/auth`: Login and register pages.
-- `src/pages/Todos.tsx`: Todo list, sorting, pagination, and generation.
-- `src/pages/Profile.tsx`: Profile page.
-- `src/pages/layouts`: Layout wrapper.
-- `src/routes`: Router and protected route logic.
-- `src/utils/auth`: Local storage auth helpers.
-- `src/validation`: Yup schemas.
+- `frontend/src/components/ui`: Reusable UI components.
+- `frontend/src/components/errors`: Error message components.
+- `frontend/src/components/notification`: Toast notification helpers.
+- `frontend/src/config/axios.config.ts`: Axios base URL setup.
+- `frontend/src/data`: Form definitions and shared data.
+- `frontend/src/hooks/useAuthenticatedQuery.ts`: TanStack Query wrapper for API requests.
+- `frontend/src/interfaces`: Shared TypeScript interfaces.
+- `frontend/src/pages/auth`: Login and register pages.
+- `frontend/src/pages/Todos.tsx`: Todo list, sorting, pagination, and generation.
+- `frontend/src/pages/Profile.tsx`: Profile page.
+- `frontend/src/pages/layouts`: Layout wrapper.
+- `frontend/src/routes`: Router and protected route logic.
+- `frontend/src/utils/auth`: Local storage auth helpers.
+- `frontend/src/validation`: Yup schemas.
 
 ### Key Takeaway
 
-This folder is a major integration project. It shows how frontend routing, forms, validation, API calls, authentication, and server data fetching fit together in a practical React application.
+The frontend side shows how routing, forms, validation, API calls, authentication, and server data fetching fit together in a practical React application.
 
-## 10-todo-app-backend
+### Backend Purpose
 
-### Purpose
+The backend is the Strapi application that supports the todo frontend. It provides authentication through the users-permissions plugin and defines the content types needed by the frontend.
 
-This is the Strapi backend that supports the todo frontend. It provides authentication through the users-permissions plugin and defines the content types needed by the frontend.
-
-### Main New Items
+### Backend Main New Items
 
 - Running a Strapi application.
 - Using Strapi scripts such as `develop`, `start`, and `build`.
@@ -498,7 +502,7 @@ This is the Strapi backend that supports the todo frontend. It provides authenti
 - Using reusable Strapi components for content blocks.
 - Storing uploaded media and seed data.
 
-### Implementation Highlights
+### Backend Implementation Highlights
 
 The custom `todo` content type includes:
 
@@ -518,22 +522,22 @@ The `about` single type includes:
 - `title`
 - `blocks` dynamic zone with media, quote, rich text, and slider components.
 
-### Folder Structure
+### Backend Folder Structure
 
-- `src/api/todo`: Todo content type, controller, route, and service.
-- `src/api/global`: Global site settings content type.
-- `src/api/about`: About page content type.
-- `src/components/shared`: Shared Strapi content components.
-- `src/extensions/users-permissions`: User model extension.
-- `config`: Strapi configuration.
-- `database`: Database-related files.
-- `data/uploads` and `public/uploads`: Uploaded media.
-- `scripts/seed.js`: Example seed script.
-- `types/generated`: Generated TypeScript content type definitions.
+- `backend/src/api/todo`: Todo content type, controller, route, and service.
+- `backend/src/api/global`: Global site settings content type.
+- `backend/src/api/about`: About page content type.
+- `backend/src/components/shared`: Shared Strapi content components.
+- `backend/src/extensions/users-permissions`: User model extension.
+- `backend/config`: Strapi configuration.
+- `backend/database`: Database-related files.
+- `backend/data/uploads` and `backend/public/uploads`: Uploaded media.
+- `backend/scripts/seed.js`: Example seed script.
+- `backend/types/generated`: Generated TypeScript content type definitions.
 
 ### Key Takeaway
 
-This folder teaches the backend side of a full-stack React app. The todo frontend depends on it for authentication and todo data.
+This combined folder teaches both sides of a full-stack React app. The frontend depends on the backend for authentication and todo data, and the root workspace script keeps the development workflow in one command.
 
 ## 11-performance-and-optimization
 
@@ -839,13 +843,12 @@ The course progresses in a practical order:
 7. Build a form-heavy product manager with validation and modals.
 8. Understand class lifecycle and hook lifecycle behavior.
 9. Build multi-page React apps with routing and protected routes.
-10. Build a full frontend todo app with authentication and server data.
-11. Connect the todo app to a Strapi backend.
-12. Prepare for performance and Vite app optimization topics.
-13. Learn Redux Toolkit through a counter.
-14. Expand Redux Toolkit into cart and product-list state.
-15. Build a VS Code-style interface with recursive UI and Redux state.
-16. Use RTK Query for server-state fetching and caching.
+10. Build a full-stack todo workspace with authentication, server data, and a Strapi backend.
+11. Prepare for performance and Vite app optimization topics.
+12. Learn Redux Toolkit through a counter.
+13. Expand Redux Toolkit into cart and product-list state.
+14. Build a VS Code-style interface with recursive UI and Redux state.
+15. Use RTK Query for server-state fetching and caching.
 
 ## Main Technologies Covered
 

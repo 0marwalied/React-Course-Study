@@ -1,18 +1,44 @@
 import ProductCard from "@/components/ProductCard";
 import type { Product } from "@/data";
 import { Grid } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useEffect, useState } from "react";
+
+import {
+  HStack,
+  Skeleton,
+  SkeletonCircle,
+  SkeletonText,
+  Stack,
+} from "@chakra-ui/react";
+import ProductCardSkeleton from "@/components/ProductCardSkeleton";
 
 const ProductsPage = () => {
-  const [productList, setProductList] = useState([]);
+  const getProductList = async () => {
+    const { data } = await axios.get(
+      `${import.meta.env.VITE_BASE_URL}/api/products?populate=category,thumbnail`,
+    );
+    return data;
+  };
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:1337/api/products?populate=category,thumbnail")
-      .then((res) => setProductList(res.data.data))
-      .catch((err) => console.log(err));
-  }, []);
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["products"],
+    queryFn: getProductList,
+  });
+
+  if (isLoading)
+    return (
+      <Grid
+        margin="30px"
+        templateColumns="repeat(auto-fill, minmax(300px, 1fr))"
+        gap="6"
+      >
+        {Array.from({ length: 6 }).map((_, idx) => (
+          <ProductCardSkeleton key={idx} />
+        ))}
+      </Grid>
+    );
+  if (error) return <h3>Something went wrong {error.message}</h3>;
 
   return (
     <Grid
@@ -20,7 +46,7 @@ const ProductsPage = () => {
       templateColumns="repeat(auto-fill, minmax(300px, 1fr))"
       gap="6"
     >
-      {productList.map((product: Product) => (
+      {data.data.map((product: Product) => (
         <ProductCard key={product!.id} {...product!} />
       ))}
     </Grid>
