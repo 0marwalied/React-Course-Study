@@ -3,14 +3,6 @@ import type { Product } from "@/data";
 import { Grid } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-
-import {
-  HStack,
-  Skeleton,
-  SkeletonCircle,
-  SkeletonText,
-  Stack,
-} from "@chakra-ui/react";
 import ProductCardSkeleton from "@/components/ProductCardSkeleton";
 
 const ProductsPage = () => {
