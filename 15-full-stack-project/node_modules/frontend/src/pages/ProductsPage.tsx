@@ -18,6 +18,8 @@ const ProductsPage = () => {
     queryFn: getProductList,
   });
 
+  // console.log(data);
+
   if (isLoading)
     return (
       <Grid

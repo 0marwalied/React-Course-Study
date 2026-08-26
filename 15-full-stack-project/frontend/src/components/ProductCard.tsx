@@ -30,7 +30,7 @@ const ProductCard = (product: Product) => {
       <Card.Footer>
         <Button
           as={Link}
-          to={`/products/${product.id}`}
+          to={`/products/${product.documentId}`}
           bg={`${colorMode === "light" ? "#e6f3fd" : "#9f7aea"}`}
           color={`${colorMode !== "light" ? "#e6f3fd" : "#9f7aea"}`}
           size="xl"
