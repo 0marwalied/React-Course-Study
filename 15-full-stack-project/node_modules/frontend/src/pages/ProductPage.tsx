@@ -9,11 +9,15 @@ import { useNavigate, useParams } from "react-router";
 import Image from "../components/ui/Image";
 import type { Product } from "@/data";
 import { useColorMode } from "@/components/ui/color-mode";
+import { useDispatch } from "react-redux";
+import { addToCart } from "@/app/features/cart/cartSlice";
 
 const ProductPage = () => {
   const { id } = useParams() as { id: string };
   const navigate = useNavigate();
   const { colorMode } = useColorMode();
+
+  const dispatch = useDispatch();
 
   const getProduct = async (): Promise<Product> => {
     const { data } = await axios.get(
@@ -29,11 +33,9 @@ const ProductPage = () => {
 
   const goBack = () => navigate(-1);
 
-  console.log(product);
-
   useEffect(() => {
-    document.title = `Product Store | Product ${id} page`;
-  }, [id]);
+    document.title = `Product Store | Product ${product?.title} page`;
+  }, [product]);
 
   if (isLoading) return <ProductDetailsSkeleton />;
 
@@ -67,7 +69,7 @@ const ProductPage = () => {
 
             <Text textAlign="center">{product?.description}</Text>
             <Text color="blue.100" fontSize="2xl" textAlign="center">
-              {product?.category.title}
+              {product?.category?.title}
             </Text>
             <Text color="blue.300" fontSize="2xl" textAlign="center">
               {product?.price.toFixed(2)}$
@@ -78,7 +80,11 @@ const ProductPage = () => {
           <Button
             variant="solid"
             colorScheme="purple"
-            onClick={() => {}}
+            onClick={() => {
+              setTimeout(() => {
+                dispatch(addToCart(product));
+              }, 1000);
+            }}
             w="full"
             size="lg"
             bg={colorMode === "light" ? "#e6f3fd" : "#9f7aea"}

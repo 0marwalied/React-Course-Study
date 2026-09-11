@@ -6,8 +6,14 @@ export interface Product {
   thumbnail?: {
     url: string;
   };
-  description: string;
-  category: {
+  description?: string;
+  category?: {
     title: string;
   };
+  quantity: number;
+}
+
+export interface User {
+  identifier: string;
+  password: string;
 }

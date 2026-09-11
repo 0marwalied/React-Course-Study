@@ -1,27 +1,18 @@
-import { NavLink, Outlet } from "react-router";
+import { type RootState } from "@/app/store";
+import CartDrawer from "@/components/CartDrawer";
+import Navbar from "@/Layout/Navbar";
+import { useSelector } from "react-redux";
+import { Outlet } from "react-router";
 
 const MainLayout = () => {
+  const isOpenDrawer = useSelector(
+    (state: RootState) => state.global.isOpenDrawer,
+  );
   return (
     <>
-      <ul
-        style={{
-          listStyle: "revert",
-        }}
-      >
-        <li>
-          <NavLink to="/" end>
-            Home
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/about">About</NavLink>
-        </li>
-        <li>
-          <NavLink to="/products">Products</NavLink>
-        </li>
-      </ul>
-
+      <Navbar />
       <Outlet />
+      <CartDrawer open={isOpenDrawer} />
     </>
   );
 };
