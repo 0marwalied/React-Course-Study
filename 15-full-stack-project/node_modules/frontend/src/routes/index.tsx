@@ -8,6 +8,8 @@ import ProductsPage from "@/pages/ProductsPage";
 import { createRoutesFromElements, Route } from "react-router";
 import { createBrowserRouter } from "react-router";
 import ProtectedRoute from "./protectedRoute";
+import DashboardLayout from "@/pages/layouts/DashboardLayout";
+import AdminPage from "@/pages/AdminPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -40,6 +42,18 @@ const router = createBrowserRouter(
           element={
             <ProtectedRoute redirectPath="/" requireAuth={false}>
               <LoginPage />
+            </ProtectedRoute>
+          }
+        />
+      </Route>
+
+      {/* Admin Route */}
+      <Route path="dashboard" element={<DashboardLayout />}>
+        <Route
+          index
+          element={
+            <ProtectedRoute redirectPath="/login">
+              <AdminPage />
             </ProtectedRoute>
           }
         />
