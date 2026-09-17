@@ -14,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { LuEye, LuEyeOff } from "react-icons/lu";
 import type { User } from "@/data";
+import { BeatLoader } from "react-spinners";
 import {
   loginSelector,
   setIsRemembered,
@@ -140,10 +141,11 @@ const LoginPage = () => {
               </Flex>
 
               <Button
+                loading={loading}
                 colorPalette="blue"
                 width="full"
                 type="submit"
-                loading={loading}
+                spinner={<BeatLoader size={8} color="white" />}
               >
                 Sign in
               </Button>

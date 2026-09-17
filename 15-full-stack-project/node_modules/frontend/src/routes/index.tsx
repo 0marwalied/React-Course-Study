@@ -10,6 +10,7 @@ import { createBrowserRouter } from "react-router";
 import ProtectedRoute from "./protectedRoute";
 import DashboardLayout from "@/pages/layouts/DashboardLayout";
 import AdminPage from "@/pages/AdminPage";
+import DashboardProductsPage from "@/pages/DashboardProductsPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -57,6 +58,7 @@ const router = createBrowserRouter(
             </ProtectedRoute>
           }
         />
+        <Route path="products" element={<DashboardProductsPage />} />
       </Route>
 
       {/* Products Routes */}

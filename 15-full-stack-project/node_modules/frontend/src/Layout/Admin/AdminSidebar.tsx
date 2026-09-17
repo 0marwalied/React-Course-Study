@@ -20,7 +20,7 @@ import {
   FiX,
 } from "react-icons/fi";
 
-import { Link } from "react-router";
+import { Link, NavLink } from "react-router";
 
 interface SidebarContentProps {
   onClose?: () => void;
@@ -60,7 +60,7 @@ const SidebarContent = ({ onClose }: SidebarContentProps) => {
 
       {/* Main navigation */}
       <Flex direction="column" gap={1}>
-        <Link to="/" onClick={onClose}>
+        <Link to="/dashboard" onClick={onClose}>
           <Button w="100%" variant="ghost" justifyContent="flex-start">
             <Flex align="center" gap={3}>
               <FiGrid />
@@ -69,31 +69,32 @@ const SidebarContent = ({ onClose }: SidebarContentProps) => {
           </Button>
         </Link>
 
-        <Link to="/products" onClick={onClose}>
+        <NavLink to="/dashboard/products" onClick={onClose}>
           <Button w="100%" variant="ghost" justifyContent="flex-start">
             <Flex align="center" gap={3}>
               <FiPieChart />
               <Text>Products</Text>
             </Flex>
           </Button>
-        </Link>
+        </NavLink>
 
-        {/* Documents */}
-        <Box>
+        <Link to="/dashboard/categories" onClick={onClose}>
           <Button w="100%" variant="ghost" justifyContent="space-between">
             <Flex align="center" gap={3}>
               <FiFileText />
               <Text>Categories</Text>
             </Flex>
           </Button>
-        </Box>
+        </Link>
 
-        <Button variant="ghost" justifyContent="flex-start">
-          <Flex align="center" gap={3}>
-            <FiBookmark />
-            <Text>Favorites</Text>
-          </Flex>
-        </Button>
+        <NavLink to="/dashboard/favorites" onClick={onClose}>
+          <Button variant="ghost" justifyContent="flex-start">
+            <Flex align="center" gap={3}>
+              <FiBookmark />
+              <Text>Favorites</Text>
+            </Flex>
+          </Button>
+        </NavLink>
       </Flex>
 
       {/* Push bottom section down */}
@@ -122,7 +123,7 @@ const SidebarContent = ({ onClose }: SidebarContentProps) => {
 };
 
 interface SidebarProps {
-  isOpen: boolean;
+  isOpen?: boolean;
   onClose: () => void;
 }
 
