@@ -10,7 +10,7 @@ export interface Product {
   category?: {
     title: string;
   };
-  quantity: number;
+  stock: number;
 }
 
 export interface User {
