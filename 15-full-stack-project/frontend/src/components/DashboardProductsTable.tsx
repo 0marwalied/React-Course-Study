@@ -3,6 +3,9 @@ import { Table, Image, Button } from "@chakra-ui/react";
 import DashboardProductsTableSkeleton from "./DashboardProductsTableSkeleton";
 import type { Product } from "@/data";
 import { Link } from "react-router";
+import { AiOutlineEye } from "react-icons/ai";
+import { BsTrash } from "react-icons/bs";
+import { FiEdit } from "react-icons/fi";
 
 const DashboardProductsTable = () => {
   const { isLoading, data } = useGetDashboardProductsQuery({
@@ -48,11 +51,20 @@ const DashboardProductsTable = () => {
                 justifyContent: "flex-end",
               }}
             >
-              <Button bg="blue.500" color="white" _hover={{ bg: "blue.600" }}>
-                <Link to={`/products/${item.documentId}`}>Open</Link>
+              <Button
+                bg="purple.500"
+                variant="solid"
+                _hover={{ bg: "purple.600" }}
+              >
+                <Link to={`/products/${item.documentId}`}>
+                  <AiOutlineEye size={17} />
+                </Link>
               </Button>
               <Button bg="red.500" color="white" _hover={{ bg: "red.600" }}>
-                Delete
+                <BsTrash size={17} />
+              </Button>
+              <Button bg="blue.500" color="white" _hover={{ bg: "blue.600" }}>
+                <FiEdit size={17} />
               </Button>
             </Table.Cell>
           </Table.Row>
