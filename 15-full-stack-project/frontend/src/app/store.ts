@@ -4,7 +4,7 @@ import cartSlice from "./features/cart/cartSlice";
 import { globalReducer } from "./features/global/globalSlice";
 import { persistStore, persistReducer, type WebStorage } from "redux-persist";
 import storageModule from "redux-persist/lib/storage";
-import { apiSlice } from "./services/apiSlice";
+import { productsApiSlice } from "./services/products";
 
 const storage =
   (storageModule as unknown as { default?: WebStorage }).default ??
@@ -22,12 +22,12 @@ export const store = configureStore({
     cart: persistedCartReducer,
     login: loginSlice,
     global: globalReducer,
-    [apiSlice.reducerPath]: apiSlice.reducer,
+    [productsApiSlice.reducerPath]: productsApiSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
-    }).concat(apiSlice.middleware),
+    }).concat(productsApiSlice.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

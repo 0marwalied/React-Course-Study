@@ -11,6 +11,7 @@ export interface Product {
     title: string;
   };
   stock: number;
+  quantity: number;
 }
 
 export interface User {
