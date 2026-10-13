@@ -36,59 +36,61 @@ const DashboardProductsTable = () => {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {data.data.map((item: Product) => (
-            <Table.Row key={item.id}>
-              <Table.Cell>{item.id}</Table.Cell>
-              <Table.Cell>{item.title}</Table.Cell>
-              <Table.Cell>{item.category?.title}</Table.Cell>
-              <Table.Cell>
-                <Image
-                  borderRadius="full"
-                  objectFit="cover"
-                  boxSize="40px"
-                  src={`${import.meta.env.VITE_BASE_URL}${item.thumbnail?.url}`}
-                  alt={item.title}
-                />
-              </Table.Cell>
-              <Table.Cell>{item.price}</Table.Cell>
-              <Table.Cell>{item.stock}</Table.Cell>
-              <Table.Cell
-                textAlign="end"
-                style={{
-                  display: "flex",
-                  gap: "0.5rem",
-                  justifyContent: "center",
-                }}
-              >
-                <Button
-                  bg="purple.500"
-                  variant="solid"
-                  _hover={{ bg: "purple.600" }}
-                >
-                  <Link to={`/products/${item.documentId}`}>
-                    <AiOutlineEye size={17} />
-                  </Link>
-                </Button>
-                <AlertDialog
-                  title="Are you sure?"
-                  description="Do you really want to destroy this product? this product cannot be undone."
-                  okTxt="Destroy"
-                  isLoading={isDeleting}
-                  isSuccess={isSuccess}
-                  whatToDo={() => {
-                    deleteProduct(item.documentId);
-                  }}
-                >
-                  <Button bg="red.500" _hover={{ bg: "red.600" }}>
-                    <BsTrash size={17} />
-                  </Button>
-                </AlertDialog>
-                <Button bg="blue.500" _hover={{ bg: "blue.600" }}>
-                  <FiEdit size={17} />
-                </Button>
-              </Table.Cell>
-            </Table.Row>
-          ))}
+          {data
+            ? data.data.map((item: Product) => (
+                <Table.Row key={item.id}>
+                  <Table.Cell>{item.id}</Table.Cell>
+                  <Table.Cell>{item.title}</Table.Cell>
+                  <Table.Cell>{item.category?.title}</Table.Cell>
+                  <Table.Cell>
+                    <Image
+                      borderRadius="full"
+                      objectFit="cover"
+                      boxSize="40px"
+                      src={`${import.meta.env.VITE_BASE_URL}${item.thumbnail?.url}`}
+                      alt={item.title}
+                    />
+                  </Table.Cell>
+                  <Table.Cell>{item.price}</Table.Cell>
+                  <Table.Cell>{item.stock}</Table.Cell>
+                  <Table.Cell
+                    textAlign="end"
+                    style={{
+                      display: "flex",
+                      gap: "0.5rem",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Button
+                      bg="purple.500"
+                      variant="solid"
+                      _hover={{ bg: "purple.600" }}
+                    >
+                      <Link to={`/products/${item.documentId}`}>
+                        <AiOutlineEye size={17} />
+                      </Link>
+                    </Button>
+                    <AlertDialog
+                      title="Are you sure?"
+                      description="Do you really want to destroy this product? this product cannot be undone."
+                      okTxt="Destroy"
+                      isLoading={isDeleting}
+                      isSuccess={isSuccess}
+                      whatToDo={() => {
+                        deleteProduct(item.documentId);
+                      }}
+                    >
+                      <Button bg="red.500" _hover={{ bg: "red.600" }}>
+                        <BsTrash size={17} />
+                      </Button>
+                    </AlertDialog>
+                    <Button bg="blue.500" _hover={{ bg: "blue.600" }}>
+                      <FiEdit size={17} />
+                    </Button>
+                  </Table.Cell>
+                </Table.Row>
+              ))
+            : null}
         </Table.Body>
       </Table.Root>
     </>

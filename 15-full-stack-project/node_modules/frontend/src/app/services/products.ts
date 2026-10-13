@@ -17,18 +17,17 @@ export const productsApiSlice = createApi({
           url: `/api/products?populate=category,thumbnail&pagination[page]=${page}&pagination[pageSize]=7`,
         };
       },
+      providesTags: ["Products"],
     }),
     deleteDashboardProduct: builder.mutation({
       query: (id) => {
-        console.log(CookieServices.get("jwt"));
         return {
           url: `/api/products/${id}`,
           method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${CookieServices.get("jwt")}`,
-          },
+          headers: { Authorization: `Bearer ${CookieServices.get("jwt")}` },
         };
       },
+      invalidatesTags: ["Products"],
     }),
   }),
 });

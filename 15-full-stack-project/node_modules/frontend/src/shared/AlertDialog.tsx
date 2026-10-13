@@ -25,11 +25,17 @@ const AlertDialog = ({
     toaster.create({
       title: "Product deleted",
       description: `The product has been deleted.`,
-      type: "info", 
+      type: "info",
     });
   }
   return (
-    <Dialog.Root role="alertdialog">
+    <Dialog.Root
+      role="alertdialog"
+      closeOnInteractOutside
+      closeOnEscape
+      open={isSuccess ? false : undefined}
+      placement={"center"}
+    >
       <Dialog.Trigger asChild>{children}</Dialog.Trigger>
       <Portal>
         <Dialog.Backdrop />

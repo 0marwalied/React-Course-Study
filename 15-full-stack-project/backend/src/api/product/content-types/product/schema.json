@@ -33,7 +33,7 @@
     },
     "stock": {
       "type": "integer",
-      "required": false
+      "required": true
     },
     "category": {
       "type": "relation",
