@@ -2,7 +2,15 @@ import {
   useDeleteDashboardProductMutation,
   useGetDashboardProductsQuery,
 } from "@/app/services/products";
-import { Table, Image, Button } from "@chakra-ui/react";
+import {
+  Table,
+  Image,
+  Button,
+  Field,
+  Input,
+  NumberInput,
+  Fieldset,
+} from "@chakra-ui/react";
 import DashboardProductsTableSkeleton from "./DashboardProductsTableSkeleton";
 import type { Product } from "@/data";
 import { Link } from "react-router";
@@ -10,6 +18,7 @@ import { AiOutlineEye } from "react-icons/ai";
 import { BsTrash } from "react-icons/bs";
 import { FiEdit } from "react-icons/fi";
 import AlertDialog from "../shared/AlertDialog";
+import CustomModal from "@/shared/Modal";
 
 const DashboardProductsTable = () => {
   const { isLoading, data } = useGetDashboardProductsQuery({
@@ -84,14 +93,42 @@ const DashboardProductsTable = () => {
                         <BsTrash size={17} />
                       </Button>
                     </AlertDialog>
-                    <Button bg="blue.500" _hover={{ bg: "blue.600" }}>
-                      <FiEdit size={17} />
-                    </Button>
+                    <CustomModal
+                      trigger={
+                        <Button bg="blue.500" _hover={{ bg: "blue.600" }}>
+                          <FiEdit size={17} />
+                        </Button>
+                      }
+                      whatToDo={() => {
+                        console.log("Edit product");
+                      }}
+                      title="Update Product"
+                    >
+                      <Fieldset.Root size="lg" maxW="md">
+                        <Fieldset.Content>
+                          <Field.Root>
+                            <Field.Label>Title</Field.Label>
+                            <Input placeholder="Product Title" />
+                          </Field.Root>
+
+                          <Field.Root>
+                            <Field.Label>Price</Field.Label>
+                            <NumberInput.Root defaultValue="10" w="100%">
+                              <NumberInput.Control />
+                              <NumberInput.Input />
+                            </NumberInput.Root>
+                          </Field.Root>
+                        </Fieldset.Content>
+                      </Fieldset.Root>
+                    </CustomModal>
                   </Table.Cell>
                 </Table.Row>
               ))
             : null}
         </Table.Body>
+        <Table.Caption mt="5">
+          Total Entries: {data?.data?.length ?? 0}
+        </Table.Caption>
       </Table.Root>
     </>
   );
