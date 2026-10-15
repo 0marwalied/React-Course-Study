@@ -10,6 +10,9 @@ import {
   Input,
   NumberInput,
   Fieldset,
+  FileUpload,
+  Box,
+  Icon,
 } from "@chakra-ui/react";
 import DashboardProductsTableSkeleton from "./DashboardProductsTableSkeleton";
 import type { Product } from "@/data";
@@ -19,16 +22,44 @@ import { BsTrash } from "react-icons/bs";
 import { FiEdit } from "react-icons/fi";
 import AlertDialog from "../shared/AlertDialog";
 import CustomModal from "@/shared/Modal";
+import { LuUpload } from "react-icons/lu";
+import React from "react";
 
 const DashboardProductsTable = () => {
   const { isLoading, data } = useGetDashboardProductsQuery({
     page: 1,
   });
+  const [productToEdit, setProductToEdit] = React.useState<Product | null>(
+    null,
+  );
+  const [thumbnail, setThumbnail] = React.useState<File | null>(null);
   const [deleteProduct, { isLoading: isDeleting, isSuccess }] =
     useDeleteDashboardProductMutation();
+
+  const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setProductToEdit((prev) => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
+  };
+
+  const onThumbnailChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setThumbnail(file);
+    }
+  };
+
   if (isLoading) return <DashboardProductsTableSkeleton />;
   if (data.data.length === 0)
     return <p className="text-center text-gray-500">No products found.</p>;
+  console.log(productToEdit);
+
+  console.log(thumbnail);
 
   return (
     <>
@@ -95,7 +126,11 @@ const DashboardProductsTable = () => {
                     </AlertDialog>
                     <CustomModal
                       trigger={
-                        <Button bg="blue.500" _hover={{ bg: "blue.600" }}>
+                        <Button
+                          bg="blue.500"
+                          _hover={{ bg: "blue.600" }}
+                          onClick={() => setProductToEdit(item)}
+                        >
                           <FiEdit size={17} />
                         </Button>
                       }
@@ -103,20 +138,67 @@ const DashboardProductsTable = () => {
                         console.log("Edit product");
                       }}
                       title="Update Product"
+                      okTxt="Update"
                     >
                       <Fieldset.Root size="lg" maxW="md">
                         <Fieldset.Content>
                           <Field.Root>
                             <Field.Label>Title</Field.Label>
-                            <Input placeholder="Product Title" />
+                            <Input
+                              placeholder="Product Title"
+                              name="title"
+                              value={productToEdit?.title || ""}
+                              onChange={onChangeHandler}
+                            />
                           </Field.Root>
 
                           <Field.Root>
                             <Field.Label>Price</Field.Label>
-                            <NumberInput.Root defaultValue="10" w="100%">
+                            <NumberInput.Root defaultValue="15000" w="100%">
                               <NumberInput.Control />
-                              <NumberInput.Input />
+                              <NumberInput.Input
+                                name="price"
+                                value={productToEdit?.price || ""}
+                                onChange={onChangeHandler}
+                              />
                             </NumberInput.Root>
+                          </Field.Root>
+
+                          <Field.Root>
+                            <Field.Label>Count in Stock</Field.Label>
+                            <NumberInput.Root defaultValue="15000" w="100%">
+                              <NumberInput.Control />
+                              <NumberInput.Input
+                                name="stock"
+                                value={productToEdit?.stock || ""}
+                                onChange={onChangeHandler}
+                              />
+                            </NumberInput.Root>
+                          </Field.Root>
+
+                          <Field.Root>
+                            <Field.Label>Thumbnail</Field.Label>
+                            <FileUpload.Root
+                              maxW="xl"
+                              alignItems="stretch"
+                              maxFiles={10}
+                            >
+                              <FileUpload.HiddenInput
+                                onChange={onThumbnailChangeHandler}
+                              />
+                              <FileUpload.Dropzone>
+                                <Icon size="md" color="fg.muted">
+                                  <LuUpload />
+                                </Icon>
+                                <FileUpload.DropzoneContent>
+                                  <Box>Drag and drop files here</Box>
+                                  <Box color="fg.muted">
+                                    .png, .jpg up to 5MB
+                                  </Box>
+                                </FileUpload.DropzoneContent>
+                              </FileUpload.Dropzone>
+                              <FileUpload.List />
+                            </FileUpload.Root>
                           </Field.Root>
                         </Fieldset.Content>
                       </Fieldset.Root>
