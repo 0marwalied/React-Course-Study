@@ -1,6 +1,7 @@
 import {
   useDeleteDashboardProductMutation,
   useGetDashboardProductsQuery,
+  useUpdateDashboardProductMutation,
 } from "@/app/services/products";
 import {
   Table,
@@ -24,6 +25,7 @@ import AlertDialog from "../shared/AlertDialog";
 import CustomModal from "@/shared/Modal";
 import { LuUpload } from "react-icons/lu";
 import React from "react";
+import { toaster } from "./ui/toaster";
 
 const DashboardProductsTable = () => {
   const { isLoading, data } = useGetDashboardProductsQuery({
@@ -35,6 +37,8 @@ const DashboardProductsTable = () => {
   const [thumbnail, setThumbnail] = React.useState<File | null>(null);
   const [deleteProduct, { isLoading: isDeleting, isSuccess }] =
     useDeleteDashboardProductMutation();
+  const [updateProduct, { isLoading: isUpdating, isSuccess: isUpdated }] =
+    useUpdateDashboardProductMutation();
 
   const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -49,9 +53,7 @@ const DashboardProductsTable = () => {
 
   const onThumbnailChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      setThumbnail(file);
-    }
+    if (file) setThumbnail(file);
   };
 
   if (isLoading) return <DashboardProductsTableSkeleton />;
@@ -129,16 +131,58 @@ const DashboardProductsTable = () => {
                         <Button
                           bg="blue.500"
                           _hover={{ bg: "blue.600" }}
-                          onClick={() => setProductToEdit(item)}
+                          onClick={() => {
+                            setProductToEdit(item);
+                            setThumbnail(null);
+                          }}
                         >
                           <FiEdit size={17} />
                         </Button>
                       }
-                      whatToDo={() => {
-                        console.log("Edit product");
+                      whatToDo={async () => {
+                        if (!productToEdit) return;
+                        const formData = new FormData();
+
+                        formData.append(
+                          "data",
+                          JSON.stringify({
+                            title: productToEdit.title,
+                            description: productToEdit.description,
+                            price: Number(productToEdit.price),
+                            stock: Number(productToEdit.stock),
+                          }),
+                        );
+
+                        if (thumbnail)
+                          formData.append("files.thumbnail", thumbnail);
+
+                        try {
+                          await updateProduct({
+                            id: productToEdit.documentId,
+                            body: formData,
+                          });
+
+                          setProductToEdit(null);
+                          setThumbnail(null);
+
+                          toaster.create({
+                            title: "Product updated",
+                            description: "Product has been updated.",
+                            type: "success",
+                          });
+                        } catch (error) {
+                          console.error("Failed to update product:", error);
+                          toaster.create({
+                            title: "Update failed",
+                            description: "Could not update the product.",
+                            type: "error",
+                          });
+                        }
                       }}
                       title="Update Product"
                       okTxt="Update"
+                      isLoading={isUpdating}
+                      isSuccess={isUpdated}
                     >
                       <Fieldset.Root size="lg" maxW="md">
                         <Fieldset.Content>
@@ -153,8 +197,18 @@ const DashboardProductsTable = () => {
                           </Field.Root>
 
                           <Field.Root>
+                            <Field.Label>Description</Field.Label>
+                            <Input
+                              placeholder="Product Description"
+                              name="description"
+                              value={productToEdit?.description || ""}
+                              onChange={onChangeHandler}
+                            />
+                          </Field.Root>
+
+                          <Field.Root>
                             <Field.Label>Price</Field.Label>
-                            <NumberInput.Root defaultValue="15000" w="100%">
+                            <NumberInput.Root w="100%">
                               <NumberInput.Control />
                               <NumberInput.Input
                                 name="price"
@@ -166,7 +220,7 @@ const DashboardProductsTable = () => {
 
                           <Field.Root>
                             <Field.Label>Count in Stock</Field.Label>
-                            <NumberInput.Root defaultValue="15000" w="100%">
+                            <NumberInput.Root w="100%">
                               <NumberInput.Control />
                               <NumberInput.Input
                                 name="stock"

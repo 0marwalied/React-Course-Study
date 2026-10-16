@@ -25,6 +25,7 @@ const CusomModal = ({
   cancelTxt = "Cancel",
 }: IProps) => {
   const ref = useRef<HTMLInputElement | null>(null);
+
   return (
     <Dialog.Root
       initialFocusEl={() => ref.current}

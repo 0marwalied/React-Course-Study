@@ -20,13 +20,26 @@ export const productsApiSlice = createApi({
       providesTags: ["Products"],
     }),
     deleteDashboardProduct: builder.mutation({
-      query: (id) => {
+      query: (arg) => {
+        const { id, data } = arg;
         return {
           url: `/api/products/${id}`,
           method: "DELETE",
           headers: { Authorization: `Bearer ${CookieServices.get("jwt")}` },
+          body: data,
         };
       },
+      invalidatesTags: ["Products"],
+    }),
+    updateDashboardProduct: builder.mutation({
+      query: ({ id, body }) => ({
+        url: `/api/products/${id}`,
+        method: "PUT",
+        body,
+        headers: {
+          Authorization: `Bearer ${CookieServices.get("jwt")}`,
+        },
+      }),
       invalidatesTags: ["Products"],
     }),
   }),
@@ -35,4 +48,5 @@ export const productsApiSlice = createApi({
 export const {
   useGetDashboardProductsQuery,
   useDeleteDashboardProductMutation,
+  useUpdateDashboardProductMutation,
 } = productsApiSlice;

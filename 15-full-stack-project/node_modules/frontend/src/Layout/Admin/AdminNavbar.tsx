@@ -56,8 +56,8 @@ const AdminNavbar = ({ onMenuOpen }: NavbarProps) => {
             <Menu.Item
               value="logout"
               onClick={() => {
+                CookieServices.remove("jwt");
                 setTimeout(() => {
-                  CookieServices.remove("jwt");
                   navigate("/login");
                   toaster.create({
                     title: "Logged out",
