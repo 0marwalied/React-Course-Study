@@ -1,6 +1,7 @@
 import { toaster } from "@/components/ui/toaster";
 import { Button, CloseButton, Dialog, Portal } from "@chakra-ui/react";
 import { BeatLoader } from "react-spinners";
+import { useEffect, useState } from "react";
 
 interface IProps {
   children?: React.ReactNode;
@@ -21,19 +22,27 @@ const AlertDialog = ({
   isLoading,
   isSuccess,
 }: IProps) => {
-  if (isSuccess) {
+  const [open, setOpen] = useState(false);
+
+  // close only when isSuccess flips to true; it stays true after, so don't force-close
+  useEffect(() => {
+    if (!isSuccess || !open) return;
+    setOpen(false);
     toaster.create({
       title: "Product deleted",
       description: `The product has been deleted.`,
       type: "info",
     });
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess]);
+
   return (
     <Dialog.Root
       role="alertdialog"
       closeOnInteractOutside
       closeOnEscape
-      open={isSuccess ? false : undefined}
+      open={open}
+      onOpenChange={(e) => setOpen(e.open)}
       placement={"center"}
     >
       <Dialog.Trigger asChild>{children}</Dialog.Trigger>

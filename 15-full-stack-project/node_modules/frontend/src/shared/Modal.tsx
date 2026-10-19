@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Dialog, Portal } from "@chakra-ui/react";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface IProps {
   trigger?: React.ReactNode;
@@ -25,13 +25,20 @@ const CusomModal = ({
   cancelTxt = "Cancel",
 }: IProps) => {
   const ref = useRef<HTMLInputElement | null>(null);
+  const [open, setOpen] = useState(false);
+
+  // close only when isSuccess flips to true; it stays true after, so don't force-close
+  useEffect(() => {
+    if (isSuccess) setOpen(false);
+  }, [isSuccess]);
 
   return (
     <Dialog.Root
       initialFocusEl={() => ref.current}
       closeOnInteractOutside
       closeOnEscape
-      open={isSuccess ? false : undefined}
+      open={open}
+      onOpenChange={(e) => setOpen(e.open)}
     >
       <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
       <Portal>

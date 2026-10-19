@@ -1,7 +1,10 @@
 import {
+  useCreateDashboardProductMutation,
   useDeleteDashboardProductMutation,
+  useGetCategoriesQuery,
   useGetDashboardProductsQuery,
   useUpdateDashboardProductMutation,
+  useUploadFileMutation,
 } from "@/app/services/products";
 import {
   Table,
@@ -14,9 +17,11 @@ import {
   FileUpload,
   Box,
   Icon,
+  Flex,
+  NativeSelect,
 } from "@chakra-ui/react";
 import DashboardProductsTableSkeleton from "./DashboardProductsTableSkeleton";
-import type { Product } from "@/data";
+import type { Category, Product } from "@/data";
 import { Link } from "react-router";
 import { AiOutlineEye } from "react-icons/ai";
 import { BsTrash } from "react-icons/bs";
@@ -34,20 +39,29 @@ const DashboardProductsTable = () => {
   const [productToEdit, setProductToEdit] = React.useState<Product | null>(
     null,
   );
+  const [productToCreate, setProductToCreate] = React.useState<Product | null>(
+    null,
+  );
   const [thumbnail, setThumbnail] = React.useState<File | null>(null);
+  const [categoryId, setCategoryId] = React.useState("");
+  const { data: categories } = useGetCategoriesQuery({});
   const [deleteProduct, { isLoading: isDeleting, isSuccess }] =
     useDeleteDashboardProductMutation();
   const [updateProduct, { isLoading: isUpdating, isSuccess: isUpdated }] =
     useUpdateDashboardProductMutation();
+  const [uploadFile, { isLoading: isUploading }] = useUploadFileMutation();
+  const [createProduct, { isLoading: isCreating, isSuccess: isCreated }] =
+    useCreateDashboardProductMutation();
 
-  const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeHandler = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    theFunction: React.Dispatch<React.SetStateAction<Product | null>>,
+  ) => {
     const { name, value } = e.target;
-    setProductToEdit((prev) => {
-      if (!prev) return null;
-      return {
-        ...prev,
-        [name]: value,
-      };
+    console.log(name, value);
+    theFunction((prev) => {
+      // create form starts as null, so build from an empty object
+      return { ...prev, [name]: value } as Product;
     });
   };
 
@@ -55,6 +69,49 @@ const DashboardProductsTable = () => {
     const file = e.target.files?.[0];
     if (file) setThumbnail(file);
   };
+
+  // returns true (and warns) if a required field is empty
+  const isMissingRequired = (p: Product | null, hasThumbnail: boolean) => {
+    const isBlank = (v: unknown) => String(v ?? "").trim() === "";
+    const missing =
+      !p ||
+      isBlank(p.title) ||
+      isBlank(p.description) ||
+      isBlank(p.price) ||
+      isBlank(p.stock) ||
+      !hasThumbnail;
+    if (missing)
+      toaster.create({
+        title: "Missing fields",
+        description:
+          "Title, description, price, stock and thumbnail are required.",
+        type: "error",
+      });
+    return missing;
+  };
+
+  // "" means no category: { set: [] } clears the relation
+  const categoryPayload = categoryId || { set: [] };
+
+  const categoryField = (
+    <Field.Root>
+      <Field.Label>Category</Field.Label>
+      <NativeSelect.Root>
+        <NativeSelect.Field
+          value={categoryId}
+          onChange={(e) => setCategoryId(e.target.value)}
+        >
+          <option value="">No category</option>
+          {categories?.data.map((c: Category) => (
+            <option key={c.documentId} value={c.documentId}>
+              {c.title}
+            </option>
+          ))}
+        </NativeSelect.Field>
+        <NativeSelect.Indicator />
+      </NativeSelect.Root>
+    </Field.Root>
+  );
 
   if (isLoading) return <DashboardProductsTableSkeleton />;
   if (data.data.length === 0)
@@ -64,7 +121,143 @@ const DashboardProductsTable = () => {
   console.log(thumbnail);
 
   return (
-    <>
+    <Flex direction="column" gap="4">
+      <CustomModal
+        trigger={
+          <Button
+            w="fit"
+            alignSelf="flex-end"
+            onClick={() => {
+              setThumbnail(null);
+              setCategoryId("");
+            }}
+          >
+            Create
+          </Button>
+        }
+        title="Create Product"
+        isLoading={isCreating || isUploading}
+        isSuccess={isCreated}
+        okTxt="Create"
+        whatToDo={async () => {
+          if (isMissingRequired(productToCreate, Boolean(thumbnail))) return;
+          if (!productToCreate) return;
+          try {
+            // Strapi 5: upload file first, then link its id in a JSON body
+            let thumbnailId: number | undefined;
+            if (thumbnail) {
+              const formData = new FormData();
+              formData.append("files", thumbnail);
+              const [uploaded] = await uploadFile(formData).unwrap();
+              thumbnailId = uploaded.id;
+            }
+            await createProduct({
+              data: {
+                title: productToCreate.title,
+                description: productToCreate.description,
+                price: Number(productToCreate.price),
+                stock: Number(productToCreate.stock),
+                thumbnail: thumbnailId,
+                category: categoryPayload,
+              },
+            }).unwrap();
+
+            setProductToCreate(null);
+            setThumbnail(null);
+
+            toaster.create({
+              title: "Product created",
+              description: "Product has been created.",
+              type: "success",
+            });
+          } catch (error) {
+            console.error("Error creating product:", error);
+            toaster.create({
+              title: "Creation failed",
+              description: "Could not create the product.",
+              type: "error",
+            });
+          }
+        }}
+      >
+        <Fieldset.Root size="lg" maxW="md">
+          <Fieldset.Content>
+            <Field.Root required>
+              <Field.Label>
+                Title <Field.RequiredIndicator />
+              </Field.Label>
+              <Input
+                placeholder="Product Title"
+                name="title"
+                value={productToCreate?.title || ""}
+                onChange={(e) => onChangeHandler(e, setProductToCreate)}
+              />
+            </Field.Root>
+
+            <Field.Root required>
+              <Field.Label>
+                Description <Field.RequiredIndicator />
+              </Field.Label>
+              <Input
+                placeholder="Product Description"
+                name="description"
+                value={productToCreate?.description || ""}
+                onChange={(e) => onChangeHandler(e, setProductToCreate)}
+              />
+            </Field.Root>
+
+            <Field.Root required>
+              <Field.Label>
+                Price <Field.RequiredIndicator />
+              </Field.Label>
+              <NumberInput.Root w="100%">
+                <NumberInput.Control />
+                <NumberInput.Input
+                  name="price"
+                  value={productToCreate?.price || ""}
+                  onChange={(e) => onChangeHandler(e, setProductToCreate)}
+                />
+              </NumberInput.Root>
+            </Field.Root>
+
+            <Field.Root required>
+              <Field.Label>
+                Count in Stock <Field.RequiredIndicator />
+              </Field.Label>
+              <NumberInput.Root w="100%">
+                <NumberInput.Control />
+                <NumberInput.Input
+                  name="stock"
+                  value={productToCreate?.stock || ""}
+                  onChange={(e) => onChangeHandler(e, setProductToCreate)}
+                />
+              </NumberInput.Root>
+            </Field.Root>
+
+            {categoryField}
+
+            <Field.Root required>
+              <Field.Label>
+                Thumbnail <Field.RequiredIndicator />
+              </Field.Label>
+              <FileUpload.Root maxW="xl" alignItems="stretch" maxFiles={10}>
+                <FileUpload.HiddenInput onChange={onThumbnailChangeHandler} />
+                <FileUpload.Dropzone>
+                  <Icon size="md" color="fg.muted">
+                    <LuUpload />
+                  </Icon>
+                  <FileUpload.DropzoneContent>
+                    <Box>Drag and drop files here</Box>
+                    <Box color="fg.muted">.png, .jpg up to 5MB</Box>
+                  </FileUpload.DropzoneContent>
+                </FileUpload.Dropzone>
+                <FileUpload.List />
+              </FileUpload.Root>
+            </Field.Root>
+          </Fieldset.Content>
+        </Fieldset.Root>
+      </CustomModal>
+
       <Table.Root size="sm" variant={"outline"}>
         <Table.Header>
           <Table.Row>
@@ -118,8 +311,8 @@ const DashboardProductsTable = () => {
                       okTxt="Destroy"
                       isLoading={isDeleting}
                       isSuccess={isSuccess}
-                      whatToDo={() => {
-                        deleteProduct(item.documentId);
+                      whatToDo={async () => {
+                        await deleteProduct(item.documentId);
                       }}
                     >
                       <Button bg="red.500" _hover={{ bg: "red.600" }}>
@@ -134,33 +327,45 @@ const DashboardProductsTable = () => {
                           onClick={() => {
                             setProductToEdit(item);
                             setThumbnail(null);
+                            setCategoryId(item.category?.documentId ?? "");
                           }}
                         >
                           <FiEdit size={17} />
                         </Button>
                       }
                       whatToDo={async () => {
+                        if (
+                          isMissingRequired(
+                            productToEdit,
+                            Boolean(thumbnail || productToEdit?.thumbnail),
+                          )
+                        )
+                          return;
                         if (!productToEdit) return;
-                        const formData = new FormData();
-
-                        formData.append(
-                          "data",
-                          JSON.stringify({
-                            title: productToEdit.title,
-                            description: productToEdit.description,
-                            price: Number(productToEdit.price),
-                            stock: Number(productToEdit.stock),
-                          }),
-                        );
-
-                        if (thumbnail)
-                          formData.append("files.thumbnail", thumbnail);
-
                         try {
+                          // Strapi 5: upload file first, then link its id in a JSON body
+                          let thumbnailId: number | undefined;
+                          if (thumbnail) {
+                            const formData = new FormData();
+                            formData.append("files", thumbnail);
+                            const [uploaded] =
+                              await uploadFile(formData).unwrap();
+                            thumbnailId = uploaded.id;
+                          }
+
                           await updateProduct({
                             id: productToEdit.documentId,
-                            body: formData,
-                          });
+                            body: {
+                              data: {
+                                title: productToEdit.title,
+                                description: productToEdit.description,
+                                price: Number(productToEdit.price),
+                                stock: Number(productToEdit.stock),
+                                ...(thumbnailId && { thumbnail: thumbnailId }),
+                                category: categoryPayload,
+                              },
+                            },
+                          }).unwrap();
 
                           setProductToEdit(null);
                           setThumbnail(null);
@@ -181,57 +386,77 @@ const DashboardProductsTable = () => {
                       }}
                       title="Update Product"
                       okTxt="Update"
-                      isLoading={isUpdating}
+                      isLoading={isUpdating || isUploading}
                       isSuccess={isUpdated}
                     >
                       <Fieldset.Root size="lg" maxW="md">
                         <Fieldset.Content>
-                          <Field.Root>
-                            <Field.Label>Title</Field.Label>
+                          <Field.Root required>
+                            <Field.Label>
+                              Title <Field.RequiredIndicator />
+                            </Field.Label>
                             <Input
                               placeholder="Product Title"
                               name="title"
                               value={productToEdit?.title || ""}
-                              onChange={onChangeHandler}
+                              onChange={(e) =>
+                                onChangeHandler(e, setProductToEdit)
+                              }
                             />
                           </Field.Root>
 
-                          <Field.Root>
-                            <Field.Label>Description</Field.Label>
+                          <Field.Root required>
+                            <Field.Label>
+                              Description <Field.RequiredIndicator />
+                            </Field.Label>
                             <Input
                               placeholder="Product Description"
                               name="description"
                               value={productToEdit?.description || ""}
-                              onChange={onChangeHandler}
+                              onChange={(e) =>
+                                onChangeHandler(e, setProductToEdit)
+                              }
                             />
                           </Field.Root>
 
-                          <Field.Root>
-                            <Field.Label>Price</Field.Label>
+                          <Field.Root required>
+                            <Field.Label>
+                              Price <Field.RequiredIndicator />
+                            </Field.Label>
                             <NumberInput.Root w="100%">
                               <NumberInput.Control />
                               <NumberInput.Input
                                 name="price"
                                 value={productToEdit?.price || ""}
-                                onChange={onChangeHandler}
+                                onChange={(e) =>
+                                  onChangeHandler(e, setProductToEdit)
+                                }
                               />
                             </NumberInput.Root>
                           </Field.Root>
 
-                          <Field.Root>
-                            <Field.Label>Count in Stock</Field.Label>
+                          <Field.Root required>
+                            <Field.Label>
+                              Count in Stock <Field.RequiredIndicator />
+                            </Field.Label>
                             <NumberInput.Root w="100%">
                               <NumberInput.Control />
                               <NumberInput.Input
                                 name="stock"
                                 value={productToEdit?.stock || ""}
-                                onChange={onChangeHandler}
+                                onChange={(e) =>
+                                  onChangeHandler(e, setProductToEdit)
+                                }
                               />
                             </NumberInput.Root>
                           </Field.Root>
 
-                          <Field.Root>
-                            <Field.Label>Thumbnail</Field.Label>
+                          {categoryField}
+
+                          <Field.Root required>
+                            <Field.Label>
+                              Thumbnail <Field.RequiredIndicator />
+                            </Field.Label>
                             <FileUpload.Root
                               maxW="xl"
                               alignItems="stretch"
@@ -266,7 +491,7 @@ const DashboardProductsTable = () => {
           Total Entries: {data?.data?.length ?? 0}
         </Table.Caption>
       </Table.Root>
-    </>
+    </Flex>
   );
 };
 

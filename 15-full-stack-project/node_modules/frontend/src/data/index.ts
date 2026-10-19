@@ -1,3 +1,8 @@
+export interface Category {
+  documentId: string;
+  title: string;
+}
+
 export interface Product {
   id: string;
   documentId: string;
@@ -7,9 +12,7 @@ export interface Product {
     url: string;
   };
   description?: string;
-  category?: {
-    title: string;
-  };
+  category?: Category;
   stock: number;
   quantity: number;
 }

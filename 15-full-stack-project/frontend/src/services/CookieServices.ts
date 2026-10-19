@@ -11,7 +11,8 @@ class CookieServices {
     cookies.set(name, value, options);
   }
   remove(name: string, options?: CookieSetOptions): void {
-    cookies.remove(name, options);
+    // default to "/" so cookies set with path "/" are removed from nested routes too
+    cookies.remove(name, { path: "/", ...options });
   }
 }
 

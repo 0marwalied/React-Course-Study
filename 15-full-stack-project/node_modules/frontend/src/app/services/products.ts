@@ -19,6 +19,11 @@ export const productsApiSlice = createApi({
       },
       providesTags: ["Products"],
     }),
+    getCategories: builder.query({
+      query: () => ({
+        url: `/api/categories?pagination[pageSize]=100`,
+      }),
+    }),
     deleteDashboardProduct: builder.mutation({
       query: (arg) => {
         const { id, data } = arg;
@@ -42,11 +47,36 @@ export const productsApiSlice = createApi({
       }),
       invalidatesTags: ["Products"],
     }),
+    createDashboardProduct: builder.mutation({
+      query: (body) => ({
+        url: `/api/products`,
+        method: "POST",
+        body,
+        headers: {
+          Authorization: `Bearer ${CookieServices.get("jwt")}`,
+        },
+      }),
+      invalidatesTags: ["Products"],
+    }),
+    // Upload file endpoint (for uploading images, etc.)
+    uploadFile: builder.mutation({
+      query: (body: FormData) => ({
+        url: `/api/upload`,
+        method: "POST",
+        body,
+        headers: {
+          Authorization: `Bearer ${CookieServices.get("jwt")}`,
+        },
+      }),
+    }),
   }),
 });
 
 export const {
   useGetDashboardProductsQuery,
+  useGetCategoriesQuery,
   useDeleteDashboardProductMutation,
   useUpdateDashboardProductMutation,
+  useCreateDashboardProductMutation,
+  useUploadFileMutation,
 } = productsApiSlice;

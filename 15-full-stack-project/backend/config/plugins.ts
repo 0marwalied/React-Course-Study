@@ -27,6 +27,8 @@ const config = ({ env }: Core.Config.Shared.ConfigParams): Core.Config.Plugin =>
     config: {
       jwtManagement: 'refresh',
       sessions: {
+        // match the frontend "jwt" cookie (3 days); default is 30 min
+        accessTokenLifespan: 60 * 60 * 24 * 3,
         httpOnly: true,
       },
     },
