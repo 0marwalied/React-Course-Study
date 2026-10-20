@@ -5,6 +5,7 @@ import { globalReducer } from "./features/global/globalSlice";
 import { persistStore, persistReducer, type WebStorage } from "redux-persist";
 import storageModule from "redux-persist/lib/storage";
 import { productsApiSlice } from "./services/products";
+import { networkReducer } from "./features/network/networkSlice";
 
 const storage =
   (storageModule as unknown as { default?: WebStorage }).default ??
@@ -19,6 +20,7 @@ const persistedCartReducer = persistReducer(persistCartConfig, cartSlice);
 
 export const store = configureStore({
   reducer: {
+    network: networkReducer,
     cart: persistedCartReducer,
     login: loginSlice,
     global: globalReducer,

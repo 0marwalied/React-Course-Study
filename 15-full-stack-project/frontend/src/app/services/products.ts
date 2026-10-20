@@ -25,15 +25,11 @@ export const productsApiSlice = createApi({
       }),
     }),
     deleteDashboardProduct: builder.mutation({
-      query: (arg) => {
-        const { id, data } = arg;
-        return {
-          url: `/api/products/${id}`,
-          method: "DELETE",
-          headers: { Authorization: `Bearer ${CookieServices.get("jwt")}` },
-          body: data,
-        };
-      },
+      query: (id: string) => ({
+        url: `/api/products/${id}`,
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${CookieServices.get("jwt")}` },
+      }),
       invalidatesTags: ["Products"],
     }),
     updateDashboardProduct: builder.mutation({

@@ -113,151 +113,158 @@ const DashboardProductsTable = () => {
     </Field.Root>
   );
 
+  const createProductModal = (
+    <CustomModal
+      trigger={
+        <Button
+          w="fit"
+          alignSelf="flex-end"
+          onClick={() => {
+            setThumbnail(null);
+            setCategoryId("");
+          }}
+        >
+          Create
+        </Button>
+      }
+      title="Create Product"
+      isLoading={isCreating || isUploading}
+      isSuccess={isCreated}
+      okTxt="Create"
+      whatToDo={async () => {
+        if (isMissingRequired(productToCreate, Boolean(thumbnail))) return;
+        if (!productToCreate) return;
+        try {
+          // Strapi 5: upload file first, then link its id in a JSON body
+          let thumbnailId: number | undefined;
+          if (thumbnail) {
+            const formData = new FormData();
+            formData.append("files", thumbnail);
+            const [uploaded] = await uploadFile(formData).unwrap();
+            thumbnailId = uploaded.id;
+          }
+          await createProduct({
+            data: {
+              title: productToCreate.title,
+              description: productToCreate.description,
+              price: Number(productToCreate.price),
+              stock: Number(productToCreate.stock),
+              thumbnail: thumbnailId,
+              category: categoryPayload,
+            },
+          }).unwrap();
+
+          setProductToCreate(null);
+          setThumbnail(null);
+
+          toaster.create({
+            title: "Product created",
+            description: "Product has been created.",
+            type: "success",
+          });
+        } catch (error) {
+          console.error("Error creating product:", error);
+          toaster.create({
+            title: "Creation failed",
+            description: "Could not create the product.",
+            type: "error",
+          });
+        }
+      }}
+    >
+      <Fieldset.Root size="lg" maxW="md">
+        <Fieldset.Content>
+          <Field.Root required>
+            <Field.Label>
+              Title <Field.RequiredIndicator />
+            </Field.Label>
+            <Input
+              placeholder="Product Title"
+              name="title"
+              value={productToCreate?.title || ""}
+              onChange={(e) => onChangeHandler(e, setProductToCreate)}
+            />
+          </Field.Root>
+
+          <Field.Root required>
+            <Field.Label>
+              Description <Field.RequiredIndicator />
+            </Field.Label>
+            <Input
+              placeholder="Product Description"
+              name="description"
+              value={productToCreate?.description || ""}
+              onChange={(e) => onChangeHandler(e, setProductToCreate)}
+            />
+          </Field.Root>
+
+          <Field.Root required>
+            <Field.Label>
+              Price <Field.RequiredIndicator />
+            </Field.Label>
+            <NumberInput.Root w="100%">
+              <NumberInput.Control />
+              <NumberInput.Input
+                name="price"
+                value={productToCreate?.price || ""}
+                onChange={(e) => onChangeHandler(e, setProductToCreate)}
+              />
+            </NumberInput.Root>
+          </Field.Root>
+
+          <Field.Root required>
+            <Field.Label>
+              Count in Stock <Field.RequiredIndicator />
+            </Field.Label>
+            <NumberInput.Root w="100%">
+              <NumberInput.Control />
+              <NumberInput.Input
+                name="stock"
+                value={productToCreate?.stock || ""}
+                onChange={(e) => onChangeHandler(e, setProductToCreate)}
+              />
+            </NumberInput.Root>
+          </Field.Root>
+
+          {categoryField}
+
+          <Field.Root required>
+            <Field.Label>
+              Thumbnail <Field.RequiredIndicator />
+            </Field.Label>
+            <FileUpload.Root maxW="xl" alignItems="stretch" maxFiles={10}>
+              <FileUpload.HiddenInput onChange={onThumbnailChangeHandler} />
+              <FileUpload.Dropzone>
+                <Icon size="md" color="fg.muted">
+                  <LuUpload />
+                </Icon>
+                <FileUpload.DropzoneContent>
+                  <Box>Drag and drop files here</Box>
+                  <Box color="fg.muted">.png, .jpg up to 5MB</Box>
+                </FileUpload.DropzoneContent>
+              </FileUpload.Dropzone>
+              <FileUpload.List />
+            </FileUpload.Root>
+          </Field.Root>
+        </Fieldset.Content>
+      </Fieldset.Root>
+    </CustomModal>
+  );
+
   if (isLoading) return <DashboardProductsTableSkeleton />;
   if (data.data.length === 0)
-    return <p className="text-center text-gray-500">No products found.</p>;
-  console.log(productToEdit);
-
-  console.log(thumbnail);
+    return (
+      <Flex direction="column" gap="4">
+        {createProductModal}
+        <Box textAlign="center" py="10">
+          No products found.
+        </Box>
+      </Flex>
+    );
 
   return (
     <Flex direction="column" gap="4">
-      <CustomModal
-        trigger={
-          <Button
-            w="fit"
-            alignSelf="flex-end"
-            onClick={() => {
-              setThumbnail(null);
-              setCategoryId("");
-            }}
-          >
-            Create
-          </Button>
-        }
-        title="Create Product"
-        isLoading={isCreating || isUploading}
-        isSuccess={isCreated}
-        okTxt="Create"
-        whatToDo={async () => {
-          if (isMissingRequired(productToCreate, Boolean(thumbnail))) return;
-          if (!productToCreate) return;
-          try {
-            // Strapi 5: upload file first, then link its id in a JSON body
-            let thumbnailId: number | undefined;
-            if (thumbnail) {
-              const formData = new FormData();
-              formData.append("files", thumbnail);
-              const [uploaded] = await uploadFile(formData).unwrap();
-              thumbnailId = uploaded.id;
-            }
-            await createProduct({
-              data: {
-                title: productToCreate.title,
-                description: productToCreate.description,
-                price: Number(productToCreate.price),
-                stock: Number(productToCreate.stock),
-                thumbnail: thumbnailId,
-                category: categoryPayload,
-              },
-            }).unwrap();
-
-            setProductToCreate(null);
-            setThumbnail(null);
-
-            toaster.create({
-              title: "Product created",
-              description: "Product has been created.",
-              type: "success",
-            });
-          } catch (error) {
-            console.error("Error creating product:", error);
-            toaster.create({
-              title: "Creation failed",
-              description: "Could not create the product.",
-              type: "error",
-            });
-          }
-        }}
-      >
-        <Fieldset.Root size="lg" maxW="md">
-          <Fieldset.Content>
-            <Field.Root required>
-              <Field.Label>
-                Title <Field.RequiredIndicator />
-              </Field.Label>
-              <Input
-                placeholder="Product Title"
-                name="title"
-                value={productToCreate?.title || ""}
-                onChange={(e) => onChangeHandler(e, setProductToCreate)}
-              />
-            </Field.Root>
-
-            <Field.Root required>
-              <Field.Label>
-                Description <Field.RequiredIndicator />
-              </Field.Label>
-              <Input
-                placeholder="Product Description"
-                name="description"
-                value={productToCreate?.description || ""}
-                onChange={(e) => onChangeHandler(e, setProductToCreate)}
-              />
-            </Field.Root>
-
-            <Field.Root required>
-              <Field.Label>
-                Price <Field.RequiredIndicator />
-              </Field.Label>
-              <NumberInput.Root w="100%">
-                <NumberInput.Control />
-                <NumberInput.Input
-                  name="price"
-                  value={productToCreate?.price || ""}
-                  onChange={(e) => onChangeHandler(e, setProductToCreate)}
-                />
-              </NumberInput.Root>
-            </Field.Root>
-
-            <Field.Root required>
-              <Field.Label>
-                Count in Stock <Field.RequiredIndicator />
-              </Field.Label>
-              <NumberInput.Root w="100%">
-                <NumberInput.Control />
-                <NumberInput.Input
-                  name="stock"
-                  value={productToCreate?.stock || ""}
-                  onChange={(e) => onChangeHandler(e, setProductToCreate)}
-                />
-              </NumberInput.Root>
-            </Field.Root>
-
-            {categoryField}
-
-            <Field.Root required>
-              <Field.Label>
-                Thumbnail <Field.RequiredIndicator />
-              </Field.Label>
-              <FileUpload.Root maxW="xl" alignItems="stretch" maxFiles={10}>
-                <FileUpload.HiddenInput onChange={onThumbnailChangeHandler} />
-                <FileUpload.Dropzone>
-                  <Icon size="md" color="fg.muted">
-                    <LuUpload />
-                  </Icon>
-                  <FileUpload.DropzoneContent>
-                    <Box>Drag and drop files here</Box>
-                    <Box color="fg.muted">.png, .jpg up to 5MB</Box>
-                  </FileUpload.DropzoneContent>
-                </FileUpload.Dropzone>
-                <FileUpload.List />
-              </FileUpload.Root>
-            </Field.Root>
-          </Fieldset.Content>
-        </Fieldset.Root>
-      </CustomModal>
-
+      {createProductModal}
       <Table.Root size="sm" variant={"outline"}>
         <Table.Header>
           <Table.Row>
@@ -305,6 +312,7 @@ const DashboardProductsTable = () => {
                         <AiOutlineEye size={17} />
                       </Link>
                     </Button>
+
                     <AlertDialog
                       title="Are you sure?"
                       description="Do you really want to destroy this product? this product cannot be undone."
@@ -312,6 +320,10 @@ const DashboardProductsTable = () => {
                       isLoading={isDeleting}
                       isSuccess={isSuccess}
                       whatToDo={async () => {
+                        console.log(
+                          "Deleting product with ID:",
+                          item.documentId,
+                        );
                         await deleteProduct(item.documentId);
                       }}
                     >
@@ -319,6 +331,7 @@ const DashboardProductsTable = () => {
                         <BsTrash size={17} />
                       </Button>
                     </AlertDialog>
+
                     <CustomModal
                       trigger={
                         <Button

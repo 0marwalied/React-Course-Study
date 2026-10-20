@@ -7,17 +7,20 @@ import { store } from "./app/store.ts";
 import { Provider } from "react-redux";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import InternetConnectionProvider from "./providers/InternetConnectionService.tsx";
 
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(
-  <Provider store={store}>
-    <QueryClientProvider client={queryClient}>
-      <StrictMode>
-        <UiProvider>
-          <App />
-        </UiProvider>
-      </StrictMode>
-    </QueryClientProvider>
-  </Provider>,
+  <InternetConnectionProvider>
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <StrictMode>
+          <UiProvider>
+            <App />
+          </UiProvider>
+        </StrictMode>
+      </QueryClientProvider>
+    </Provider>
+  </InternetConnectionProvider>,
 );
