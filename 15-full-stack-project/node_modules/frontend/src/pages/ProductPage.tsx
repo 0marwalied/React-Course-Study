@@ -56,7 +56,7 @@ const ProductPage = () => {
       <Card.Root maxW="sm" mx="auto" border="1px solid #a8b5c8" bg="none">
         <Card.Body>
           <Image
-            src={`${import.meta.env.VITE_BASE_URL}${product?.thumbnail?.url}`}
+            src={`${product?.thumbnail?.url}`}
             alt={`${product?.title}`}
             height="200px"
             width="full"

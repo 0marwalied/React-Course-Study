@@ -289,7 +289,7 @@ const DashboardProductsTable = () => {
                       borderRadius="full"
                       objectFit="cover"
                       boxSize="40px"
-                      src={`${import.meta.env.VITE_BASE_URL}${item.thumbnail?.url}`}
+                      src={`${item.thumbnail?.url}`}
                       alt={item.title}
                     />
                   </Table.Cell>

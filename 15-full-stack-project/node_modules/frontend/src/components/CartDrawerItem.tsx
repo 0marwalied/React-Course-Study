@@ -12,7 +12,7 @@ interface IProps {
 }
 
 const CartDrawerItem = ({ id, thumbnail, title, price, quantity }: IProps) => {
-  const fullUrl = import.meta.env.VITE_BASE_URL + thumbnail?.url;
+  const fullUrl = thumbnail?.url;
   const dispatch = useAppDispatch();
 
   return (

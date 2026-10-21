@@ -1,13 +1,13 @@
+import { networkMode } from "@/app/features/network/networkSlice";
+import { useAppDispatch } from "@/app/store";
 import { toaster } from "@/components/ui/toaster";
-import { useEffect, useState } from "react";
-
+import { useEffect } from "react";
 const InternetConnectionProvider = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
-  const [isOnline, setIsOnline] = useState<boolean>(navigator.onLine);
-
+  const dispatch = useAppDispatch();
   const closeToast = () => {
     toaster.dismiss();
   };
@@ -22,27 +22,23 @@ const InternetConnectionProvider = ({
   };
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setIsOnline(navigator.onLine);
-  }, []);
+    const setOnline = () => {
+      dispatch(networkMode(true));
+      closeToast();
+    };
 
-  window.addEventListener("online", () => {
-    setIsOnline(true);
-    closeToast();
-  });
+    const setOffline = () => {
+      dispatch(networkMode(false));
+      showToast();
+    };
 
-  window.addEventListener("offline", () => {
-    setIsOnline(false);
-  });
-
-  if (isOnline === false) {
-    return (
-      <>
-        {children}
-        {showToast()}
-      </>
-    );
-  }
+    window.addEventListener("online", setOnline);
+    window.addEventListener("offline", setOffline);
+    return () => {
+      window.removeEventListener("online", setOnline);
+      window.removeEventListener("offline", setOffline);
+    };
+  }, [dispatch]);
 
   return children;
 };

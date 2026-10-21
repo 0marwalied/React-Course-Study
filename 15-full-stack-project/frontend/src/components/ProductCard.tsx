@@ -11,7 +11,7 @@ const ProductCard = (product: Product) => {
   return (
     <Card.Root border={"1px solid #a8b5c8"} bg="none">
       <Image
-        src={`${import.meta.env.VITE_BASE_URL}${thumbnail?.url}`}
+        src={`${thumbnail?.url}`}
         alt="Green double couch with wooden legs"
         boxSize="200px"
         rounded="50%"
