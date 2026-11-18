@@ -13,11 +13,18 @@ import {
 import { Field, FieldGroup } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { getTodos } from "@/actions/todos.actions";
+import { Suspense } from "react";
+
+async function TodoList() {
+  const todos = await getTodos();
+  return <pre>{JSON.stringify(todos, null, 2)}</pre>;
+}
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center">
-      <Dialog>
+    <main className="container">
+      {/* <Dialog>
         <form>
           <DialogTrigger
             render={
@@ -54,7 +61,10 @@ export default function Home() {
             </DialogFooter>
           </DialogContent>
         </form>
-      </Dialog>
-    </div>
+      </Dialog> */}
+      <Suspense fallback={<p>Loading todos...</p>}>
+        <TodoList />
+      </Suspense>
+    </main>
   );
 }
