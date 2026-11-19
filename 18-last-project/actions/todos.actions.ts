@@ -1,7 +1,9 @@
 "use server";
 
 import { Todo } from "@/types";
-import { db as prisma } from "@/lib/db";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 async function getTodos() {
   return await prisma.todo.findMany();
